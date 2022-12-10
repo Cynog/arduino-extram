@@ -49,7 +49,11 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
     // if (f_vals == NULL)
     //    serprint("F_VALS MEMORY ALLOCATION FAILED\n\r");
     float phi_old[(N + 2) * (N + 2)];
+    serprinthex(phi_old);
+    serprint("\n\r");
     float f_vals[(N + 2) * (N + 2)];
+    serprinthex(f_vals);
+    serprint("\n\r");
     for (int i = 0; i < (N + 2) * (N + 2); i++) {
         phi[i] = 0.0;
         phi_old[i] = 0.0;
@@ -72,8 +76,8 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
         }
     }
 
-    //serprintmat(f_vals, N + 2);
-    //serprint("\n\r");
+    // serprintmat(f_vals, N + 2);
+    // serprint("\n\r");
 
     ////////////////* JACOBI MAIN LOOP *////////////////
     for (int k = 1; k <= maxit; k++) {
@@ -182,6 +186,9 @@ int main(void) {
     // solve poisson equation
     int maxit = 1000;
     float tol = 1e-2F;
+
+    serprinthex(phi);
+    serprint("\n\r");
 
     struct output retval = solve_serial(N, f_source, maxit, tol, phi);
 

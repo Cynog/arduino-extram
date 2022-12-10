@@ -38,8 +38,14 @@ void serprintuint8(uint8_t val) {
 }
 
 void serprintint(int i) {
-    char s[10];
+    char s[16];
     sprintf(s, "%d", i);
+    serprint(s);
+}
+
+void serprinthex(int i) {
+    char s[16];
+    sprintf(s, "0x%x", i);
     serprint(s);
 }
 
