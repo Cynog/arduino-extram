@@ -42,24 +42,24 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
     retval.residual = 20.0F;
 
     // allocate memory
-    // float *phi_old = (float *)calloc((N + 2) * (N + 2), sizeof(float));
-    // if (phi_old == NULL)
-    //    serprint("PHI_OLD MEMORY ALLOCATION FAILED\n\r");
-    // float *f_vals = (float *)calloc((N + 2) * (N + 2), sizeof(float));
-    // if (f_vals == NULL)
-    //    serprint("F_VALS MEMORY ALLOCATION FAILED\n\r");
-    float phi_old[(N + 2) * (N + 2)];
+    float *phi_old = (float *)calloc((N + 2) * (N + 2), sizeof(float));
+    if (phi_old == NULL)
+        serprint("PHI_OLD MEMORY ALLOCATION FAILED\n\r");
+    float *f_vals = (float *)calloc((N + 2) * (N + 2), sizeof(float));
+    if (f_vals == NULL)
+        serprint("F_VALS MEMORY ALLOCATION FAILED\n\r");
+    // float phi_old[(N + 2) * (N + 2)];
     serprinthex(phi_old);
     serprint("\n\r");
-    float f_vals[(N + 2) * (N + 2)];
+    // float f_vals[(N + 2) * (N + 2)];
     serprinthex(f_vals);
     serprint("\n\r");
-    for (int i = 0; i < (N + 2) * (N + 2); i++) {
-        phi[i] = 0.0;
-        phi_old[i] = 0.0;
-        f_vals[i] = 0.0;
-    }
-    // evaluate source function
+    // for (int i = 0; i < (N + 2) * (N + 2); i++) {
+    //     phi[i] = 0.0;
+    //     phi_old[i] = 0.0;
+    //     f_vals[i] = 0.0;
+    // }
+    //  evaluate source function
     for (int i = 1; i < N + 1; i++) {
         float x = (float)(i) / (float)(N + 1);
         for (int j = 1; j < N + 1; j++) {
@@ -152,8 +152,8 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
         // check for convergence
         if (retval.residual < tol) {
             // free
-            // free(phi_old);
-            // free(f_vals);
+            free(phi_old);
+            free(f_vals);
 
             // return info about convergence
             retval.flag = 0;
@@ -163,8 +163,8 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
     }
 
     // free
-    // free(phi_old);
-    // free(f_vals);
+    free(phi_old);
+    free(f_vals);
 
     // desired tolerance not reached
     return retval;
@@ -178,10 +178,10 @@ int main(void) {
     int N = 10;
 
     // allocate phi
-    // float *phi = (float *)calloc(N * N, sizeof(float));
-    // if (phi == NULL)
-    //    serprint("PHI MEMORY ALLOCATION FAILED\n\r");
-    float phi[(N + 2) * (N + 2)];
+    float *phi = (float *)calloc((N+2) * (N+2), sizeof(float));
+    if (phi == NULL)
+        serprint("PHI MEMORY ALLOCATION FAILED\n\r");
+    // float phi[(N + 2) * (N + 2)];
 
     // solve poisson equation
     int maxit = 1000;
@@ -201,7 +201,7 @@ int main(void) {
     serprint("\n\r");
 
     // free
-    // free(phi);
+    free(phi);
 
     // endless loop
     while (1) {
