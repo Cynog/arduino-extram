@@ -28,7 +28,7 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
     float *phi_old = (float *)calloc((N + 2) * (N + 2), sizeof(float));
     if (phi_old == NULL)
         serprint("PHI_OLD MEMORY ALLOCATION FAILED\n\r");
-    float *f_vals = (float *)calloc(N * N, sizeof(float));
+    float *f_vals = (float *)malloc(N * N * sizeof(float));
     if (f_vals == NULL)
         serprint("F_VALS MEMORY ALLOCATION FAILED\n\r");
 
