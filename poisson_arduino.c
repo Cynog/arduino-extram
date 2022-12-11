@@ -28,7 +28,7 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
     float *phi_old = (float *)calloc((N + 2) * (N + 2), sizeof(float));
     if (phi_old == NULL)
         serprint("PHI_OLD MEMORY ALLOCATION FAILED\n\r");
-    float *f_vals = (float *)calloc((N + 2) * (N + 2), sizeof(float));
+    float *f_vals = (float *)calloc(N * N, sizeof(float));
     if (f_vals == NULL)
         serprint("F_VALS MEMORY ALLOCATION FAILED\n\r");
 
@@ -37,15 +37,15 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
         float x = (float)(i) / (float)(N + 1);
         for (int j = 1; j < N + 1; j++) {
             float y = (float)(j) / (float)(N + 1);
-            f_vals[(N + 2) * i + j] = f_source(x, y);
+            f_vals[N * (i - 1) + (j - 1)] = f_source(x, y);
         }
     }
 
     // scale evaluated source function because of discretization
     float square_Np2 = (float)((N + 2) * (N + 2));
-    for (int i = 0; i < N + 2; i++) {
-        for (int j = 0; j < N + 2; j++) {
-            f_vals[(N + 2) * i + j] /= square_Np2;
+    for (int i = 0; i < N; i++) {
+        for (int j = 0; j < N; j++) {
+            f_vals[N * i + j] /= square_Np2;
         }
     }
 
@@ -60,7 +60,7 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
         // update phi
         for (int i = 1; i < N + 1; i++) {
             for (int j = 1; j < N + 1; j++) {
-                phi[(N + 2) * i + j] = 0.25 * (phi_old[(N + 2) * (i + 1) + j] + phi_old[(N + 2) * (i - 1) + j] + phi_old[(N + 2) * i + (j + 1)] + phi_old[(N + 2) * i + (j - 1)] - f_vals[(N + 2) * i + j]);
+                phi[(N + 2) * i + j] = 0.25 * (phi_old[(N + 2) * (i + 1) + j] + phi_old[(N + 2) * (i - 1) + j] + phi_old[(N + 2) * i + (j + 1)] + phi_old[(N + 2) * i + (j - 1)] - f_vals[N * (i - 1) + (j - 1)]);
             }
         }
 
