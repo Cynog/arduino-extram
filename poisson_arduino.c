@@ -20,22 +20,19 @@ float f_source(float x, float y) {
 struct output solve_serial(int N, float (*f_source)(float, float), int maxit, float tol, float *phi) {
     // prepare return values
     struct output retval;
-    retval.flag = 2;
+    retval.flag = 1;
     retval.iter = maxit;
-    retval.residual = 20.0F;
-    float res = 20.0F;
-    serprintfloat(res, 12, 6);
-    serprint("\n\r");
+    retval.residual = INFINITY;
 
     // allocate memory
     float *phi_old = (float *)calloc((N + 2) * (N + 2), sizeof(float));
     if (phi_old == NULL)
-        serprint("MEMORY ALLOCATION FAILED\n\r");
+        serprint("PHI_OLD MEMORY ALLOCATION FAILED\n\r");
     float *f_vals = (float *)calloc((N + 2) * (N + 2), sizeof(float));
     if (f_vals == NULL)
-        serprint("MEMORY ALLOCATION FAILED\n\r");
+        serprint("F_VALS MEMORY ALLOCATION FAILED\n\r");
 
-    // evaluate source function
+    //  evaluate source function
     for (int i = 1; i < N + 1; i++) {
         float x = (float)(i) / (float)(N + 1);
         for (int j = 1; j < N + 1; j++) {

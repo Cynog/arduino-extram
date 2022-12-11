@@ -1,3 +1,9 @@
+# definitions
+SRCS = main.c usart.c poisson_arduino.c
+HDRS = usart.h poisson_arduino.h
+GCCFLAGS = -Wall -g -Os -mmcu=atmega328
+
+
 # select the first arduino connected to the computer by serial id
 $(eval serialid=$(shell find /dev/serial/by-id/ -name "*Arduino*" | head -1))
 
@@ -28,14 +34,14 @@ cu:
 
 
 # C: compiling and flashing
-main: main.c usart.c
-	@echo "compiling..."
-	avr-gcc -Wall -g -Os -mmcu=atmega328 $^ -o $@.bin
-	@echo "converting to hex..."
+main: $(SRCS) $(HDRS)
+	@echo "COMPILING..."
+	avr-gcc $(GCCFLAGS) $^ -o $@.bin
+	@echo "\n\n\nCONVERTING TO HEX..."
 	avr-objcopy -j .text -j .data -O ihex $@.bin $@.hex
-	@echo "flashing..."
+	@echo "\n\n\nFLASHING..."
 	avrdude -v -p m328p -c arduino -P $(serialid) -D -U flash:w:$@.hex
-	@echo "ALL STEPS SUCCEDED!"
+	@echo "\n\n\nALL STEPS SUCCEDED!"
 
 
 # clean
