@@ -11,7 +11,7 @@ int main(void) {
     setup_usart();
 
     // test
-    int N = 13;
+    int N = 18;
 
     // allocate phi
     float *phi = (float *)calloc((N + 2) * (N + 2), sizeof(float));
