@@ -25,7 +25,7 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
     retval.residual = INFINITY;
 
     // allocate memory
-    float *phi_old = (float *)calloc((N + 2) * (N + 2), sizeof(float));
+    float *phi_old = (float *)malloc((N + 1) * sizeof(float));
     if (phi_old == NULL)
         serprint("PHI_OLD MEMORY ALLOCATION FAILED\n\r");
     float *f_vals = (float *)malloc(N * N * sizeof(float));
@@ -51,24 +51,22 @@ struct output solve_serial(int N, float (*f_source)(float, float), int maxit, fl
 
     ////////////////* JACOBI MAIN LOOP *////////////////
     for (int k = 1; k <= maxit; k++) {
-        // save old phi
-        float *buf;
-        buf = phi_old;
-        phi_old = phi;
-        phi = buf;
+        // initialize phi_old
+        for (int j = 1; j < N + 1; j++)
+            phi_old[j] = phi[j];
 
-        // update phi
-        for (int i = 1; i < N + 1; i++) {
-            for (int j = 1; j < N + 1; j++) {
-                phi[(N + 2) * i + j] = 0.25 * (phi_old[(N + 2) * (i + 1) + j] + phi_old[(N + 2) * (i - 1) + j] + phi_old[(N + 2) * i + (j + 1)] + phi_old[(N + 2) * i + (j - 1)] - f_vals[N * (i - 1) + (j - 1)]);
-            }
-        }
-
-        // calculate change
+        // update phi and calculate change
         float scp = 0.0;
         for (int i = 1; i < N + 1; i++) {
+            phi_old[0] = phi[(N + 2) * i];
             for (int j = 1; j < N + 1; j++) {
-                float diff = phi[(N + 2) * i + j] - phi_old[(N + 2) * i + j];
+                // update phi
+                float phi_old_buf = phi[(N + 2) * i + j];
+                phi[(N + 2) * i + j] = 0.25 * (phi[(N + 2) * (i + 1) + j] + phi_old[j] + phi[(N + 2) * i + (j + 1)] + phi_old[j - 1] - f_vals[N * (i - 1) + (j - 1)]);
+                phi_old[j] = phi_old_buf;
+
+                // calculate change
+                float diff = phi[(N + 2) * i + j] - phi_old_buf;
                 scp += diff * diff;
             }
         }
