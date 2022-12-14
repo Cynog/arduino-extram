@@ -1,7 +1,5 @@
 #include "usart.h"
 
-#include <time.h>
-
 void setup_usart(void) {
     UBRR0L = 103;                          // baud rate 9600
     UCSR0B = (1 << TXEN0) | (1 << RXEN0);  // enable transmit and receive
