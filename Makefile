@@ -1,6 +1,6 @@
 # definitions
-SRCS = main.c usart.c poisson_arduino.c
-HDRS = usart.h poisson_arduino.h
+SRCS = main.c usart.c poisson_arduino.c extram.c
+HDRS = usart.h poisson_arduino.h extram.h
 GCCFLAGS = -Wall -g -Os -mmcu=atmega328
 
 
@@ -35,6 +35,16 @@ cu:
 
 # C: compiling and flashing
 main: $(SRCS) $(HDRS)
+	@echo "COMPILING..."
+	avr-gcc $(GCCFLAGS) $^ -o $@.bin
+	@echo "\n\n\nCONVERTING TO HEX..."
+	avr-objcopy -j .text -j .data -O ihex $@.bin $@.hex
+	@echo "\n\n\nFLASHING..."
+	avrdude -v -p m328p -c arduino -P $(serialid) -D -U flash:w:$@.hex
+	@echo "\n\n\nALL STEPS SUCCEDED!"
+
+
+test_extram: test_extram.c usart.c extram.c $(HDRS)
 	@echo "COMPILING..."
 	avr-gcc $(GCCFLAGS) $^ -o $@.bin
 	@echo "\n\n\nCONVERTING TO HEX..."

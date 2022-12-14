@@ -3,6 +3,15 @@
 
 #include <avr/io.h>
 #include <stdio.h>
+#include <util/delay.h>
+
+#define PORTDATA PORTD
+#define DDRDATA DDRD
+#define MASKDATA (1<<PD3)
+
+#define PORTCLK PORTD
+#define DDRCLK DDRD
+#define MASKCLK (1<<PD2)
 
 void setup_extram(void);
 
