@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <util/delay.h>
 
+#include "usart.h"
+
 // definitions for shifting register
 #define PORT_SRCLK PORTD
 #define DDR_SRCLK DDRD
@@ -15,12 +17,15 @@
 #define MASK_SER (1 << PD3)
 
 // definitions for external SRAM
-#define PORT_IO0 PORTD
-#define DDR_IO0 DDRD
-#define MASK_IO0 (1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
-#define PORT_IO1 PORTB
-#define DDR_IO1 DDRB
-#define MASK_IO1 (1<<PB0)|(1<<PB1)|(1<<PB2)|(1<<PB3)
+#define PORT_IO0 PORTB
+#define PIN_IO0 PINB
+#define DDR_IO0 DDRB
+#define MASK_IO0 ((1<<PB0)|(1<<PB1)|(1<<PB2)|(1<<PB3))
+
+#define PORT_IO1 PORTD
+#define PIN_IO1 PIND
+#define DDR_IO1 DDRD
+#define MASK_IO1 ((1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7))
 
 #define PORT_OE PORTB
 #define DDR_OE DDRB
@@ -30,9 +35,9 @@
 #define DDR_WE DDRB
 #define MASK_WE (1<<PB5)
 
-#define PORT_CS2 PORTC
-#define DDR_CS2 DDRC
-#define MASK_CS2 (1<<PC5)
+#define PORT_CS1 PORTC
+#define DDR_CS1 DDRC
+#define MASK_CS1 (1<<PC5)
 
 void setup_extram(void);
 
@@ -43,8 +48,8 @@ void setup_extram(void);
  */
 void send_addr_to_sr(uint16_t addr);
 
-uint8_t read_extram(uint16_t addr);
+uint8_t extram_read(uint16_t addr);
 
-uint8_t write_extram(uint16_t addr);
+void extram_write(uint16_t addr, uint8_t data);
 
 #endif  // _EXTRAM_H_
