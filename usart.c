@@ -32,7 +32,8 @@ void serprintuint8(uint8_t val) {
         if (c != 0 || sent) {
             serprintchar(c + 48);
             sent = 1;
-        } else if (i < 2) serprintchar(' ');
+        } else if (i < 2)
+            serprintchar(' ');
         div /= 10;
         val = mod;
     }
@@ -52,7 +53,8 @@ void serprintuint16(uint16_t val) {
         if (c != 0 || sent) {
             serprintchar(c + 48);
             sent = 1;
-        } else if (i < 4) serprintchar(' ');
+        } else if (i < 4)
+            serprintchar(' ');
         div /= 10;
         val = mod;
     }
@@ -87,4 +89,15 @@ void serprintmat(float* M, int n) {
         }
         serprint("\n\r");
     }
+}
+
+uint8_t serscan(void) {
+    while ((UCSR0A & (1 << RXC0)) == 0) {
+    };
+    return UDR0;
+}
+
+void wait_key(void) {
+    serprint("press any key to continue\n\r");
+    serscan();
 }

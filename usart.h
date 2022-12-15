@@ -16,4 +16,8 @@ void serprintfloat(float f, signed char width, unsigned char prec);
 
 void serprintmat(float *M, int n);
 
+uint8_t serscan(void);
+
+void wait_key(void);
+
 #endif  // _USART_H_
