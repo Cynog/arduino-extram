@@ -5,13 +5,34 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-#define PORTDATA PORTD
-#define DDRDATA DDRD
-#define MASKDATA (1 << PD3)
+// definitions for shifting register
+#define PORT_SRCLK PORTD
+#define DDR_SRCLK DDRD
+#define MASK_SRCLK (1 << PD2)
 
-#define PORTCLK PORTD
-#define DDRCLK DDRD
-#define MASKCLK (1 << PD2)
+#define PORT_SER PORTD
+#define DDR_SER DDRD
+#define MASK_SER (1 << PD3)
+
+// definitions for external SRAM
+#define PORT_IO0 PORTD
+#define DDR_IO0 DDRD
+#define MASK_IO0 (1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7)
+#define PORT_IO1 PORTB
+#define DDR_IO1 DDRB
+#define MASK_IO1 (1<<PB0)|(1<<PB1)|(1<<PB2)|(1<<PB3)
+
+#define PORT_OE PORTB
+#define DDR_OE DDRB
+#define MASK_OE (1<<PB4)
+
+#define PORT_WE PORTB
+#define DDR_WE DDRB
+#define MASK_WE (1<<PB5)
+
+#define PORT_CS2 PORTC
+#define DDR_CS2 DDRC
+#define MASK_CS2 (1<<PC5)
 
 void setup_extram(void);
 
