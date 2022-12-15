@@ -41,6 +41,26 @@ void serprintuint8(uint8_t val) {
         serprintchar('0');
 }
 
+void serprintuint16(uint16_t val) {
+    uint16_t div = 10000;
+    uint16_t mod;
+    uint8_t sent = 0;
+
+    for (int i = 0; i < 5; i++) {
+        mod = val % div;
+        uint8_t c = val / div;
+        if (c != 0 || sent) {
+            serprintchar(c + 48);
+            sent = 1;
+        } else if (i < 4) serprintchar(' ');
+        div /= 10;
+        val = mod;
+    }
+
+    if (sent == 0)
+        serprintchar('0');
+}
+
 void serprintint(int i) {
     char s[16];
     sprintf(s, "%d", i);
