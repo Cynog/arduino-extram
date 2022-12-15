@@ -1,7 +1,7 @@
 # definitions
 SRCS = main.c usart.c poisson_arduino.c extram.c
 HDRS = usart.h poisson_arduino.h extram.h
-GCCFLAGS = -Wall -g -Os -mmcu=atmega328
+GCCFLAGS = -Wall -g -Os -mmcu=atmega328 -DF_CPU=16000000UL
 
 
 # select the first arduino connected to the computer by serial id
