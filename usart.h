@@ -9,7 +9,7 @@ void serprintchar(char c);
 void serprint(char *s);
 void serprintuint8(uint8_t val);
 void serprintint(int i);
-void serprinthex(int i); 
+void serprinthex(int i);
 void serprintfloat(float f, signed char width, unsigned char prec);
 
 void serprintmat(float *M, int n);

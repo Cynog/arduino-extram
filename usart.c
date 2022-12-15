@@ -24,15 +24,21 @@ void serprint(char* s) {
 void serprintuint8(uint8_t val) {
     uint8_t div = 100;
     uint8_t mod;
+    uint8_t sent = 0;
 
     for (int i = 0; i < 3; i++) {
         mod = val % div;
         uint8_t c = val / div;
-        if (c != 0 || i == 2)
+        if (c != 0 || sent) {
             serprintchar(c + 48);
+            sent = 1;
+        } else if (i < 2) serprintchar(' ');
         div /= 10;
         val = mod;
     }
+
+    if (sent == 0)
+        serprintchar('0');
 }
 
 void serprintint(int i) {
