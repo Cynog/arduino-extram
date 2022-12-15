@@ -7,14 +7,19 @@
 
 #define PORTDATA PORTD
 #define DDRDATA DDRD
-#define MASKDATA (1<<PD3)
+#define MASKDATA (1 << PD3)
 
 #define PORTCLK PORTD
 #define DDRCLK DDRD
-#define MASKCLK (1<<PD2)
+#define MASKCLK (1 << PD2)
 
 void setup_extram(void);
 
+/**
+ * @brief send a 16-Bit integer to a shifting register
+ *
+ * @param addr 16-Bit integer to send
+ */
 void send_addr_to_sr(uint16_t addr);
 
 uint8_t read_extram(uint16_t addr);

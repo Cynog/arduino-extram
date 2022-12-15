@@ -10,11 +10,11 @@ int main(void) {
     // initialize usart
     setup_usart();
 
-    //* test shifting register
-    DDRDATA |= MASKDATA;
-    DDRCLK |= MASKCLK;
+    // initialize shifting register
+    setup_extram();
 
-    uint16_t addr = 7921;
+    // test shifting register
+    uint16_t addr = 54932;
     send_addr_to_sr(addr);
 
     // endless loop
