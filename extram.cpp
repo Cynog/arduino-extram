@@ -1,4 +1,4 @@
-#include "extram.h"
+#include "extram.hpp"
 
 void setup_extram(void) {
     // shifting register pins

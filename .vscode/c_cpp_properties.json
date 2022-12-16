@@ -7,7 +7,7 @@
                 "/usr/lib/avr/include"
             ],
             "defines": ["__AVR_ATmega328P__"],
-            "compilerPath": "/usr/bin/gcc",
+            "compilerPath": "/usr/bin/avr-g++",
             "cStandard": "gnu11",
             "intelliSenseMode": "linux-gcc-x64",
             "configurationProvider": "ms-vscode.makefile-tools",

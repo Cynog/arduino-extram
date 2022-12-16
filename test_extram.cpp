@@ -1,8 +1,8 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "extram.h"
-#include "usart.h"
+#include "extram.hpp"
+#include "usart.hpp"
 
 int main(void) {
     // initialize usart
@@ -11,10 +11,13 @@ int main(void) {
     // initialize shifting register
     setup_extram();
 
-    // write whole sram
+    // number of Bytes
+    uint16_t N = (1 << 8);
+
+    // write SRAM
     serprint("WRITING...\n\r");
     uint8_t data_write = 0;
-    for (uint16_t addr = 0; addr < (1 << 13); addr++) {
+    for (uint16_t addr = 0; addr < N; addr++) {
         // write
         extram_write(addr, data_write);
 
@@ -23,10 +26,10 @@ int main(void) {
     }
     serprint("WRITING FINISHED!\n\r\n\r");
 
-    // read whole sram again
+    // read SRAM again
     serprint("READING...\n\r");
     data_write = 0;
-    for (uint16_t addr = 0; addr < (1 << 13); addr++) {
+    for (uint16_t addr = 0; addr < N; addr++) {
         // read
         uint8_t data_read = extram_read(addr);
 

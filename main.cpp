@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "poisson_arduino.h"
-#include "usart.h"
+#include "poisson.hpp"
+#include "usart.hpp"
 
 int main(void) {
     // initialize usart

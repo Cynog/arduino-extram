@@ -1,4 +1,4 @@
-#include "usart.h"
+#include "usart.hpp"
 
 void setup_usart(void) {
     UBRR0L = 103;                          // baud rate 9600
@@ -99,5 +99,10 @@ uint8_t serscan(void) {
 
 void wait_key(void) {
     serprint("press any key to continue\n\r");
+    serscan();
+}
+
+void wait_key(char* message) {
+    serprint(message);
     serscan();
 }

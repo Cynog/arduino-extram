@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <util/delay.h>
 
-#include "usart.h"
+#include "usart.hpp"
 
 // definitions for shifting register
 #define PORT_SRCLK PORTD

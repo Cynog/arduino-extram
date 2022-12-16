@@ -1,4 +1,4 @@
-#include "poisson_arduino.h"
+#include "poisson.hpp"
 
 // source function
 float f_source(float x, float y) {

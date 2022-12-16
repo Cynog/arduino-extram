@@ -1,5 +1,4 @@
-#ifndef _USART_H_
-#define _USART_H_
+#pragma once
 
 #include <avr/io.h>
 #include <stdio.h>
@@ -19,5 +18,4 @@ void serprintmat(float *M, int n);
 uint8_t serscan(void);
 
 void wait_key(void);
-
-#endif  // _USART_H_
+void wait_key(char *message);

@@ -4,7 +4,7 @@
 #include <math.h>
 #include <stdlib.h>
 
-#include "usart.h"
+#include "usart.hpp"
 
 // contains a convergence flag, number of iterations, residual
 struct output {
