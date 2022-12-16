@@ -71,8 +71,6 @@ int main(void) {
     extram_write(30, 30);
     extram_write(40, 40);
 
-    extram_write(0, 3);
-
     data = extram_read(10);
     serprintuint8(data);
     serprint("\n\r");
