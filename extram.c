@@ -11,9 +11,6 @@ void setup_extram(void) {
 
     DDR_WE |= MASK_WE;
     PORT_WE |= MASK_WE;
-
-    // DDR_CS1 |= MASK_CS1;
-    // PORT_CS1 |= MASK_CS1;
 }
 
 void send_addr_to_sr(uint16_t addr) {

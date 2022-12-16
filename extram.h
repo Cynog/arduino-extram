@@ -35,10 +35,6 @@
 #define DDR_WE DDRB
 #define MASK_WE (1<<PB5)
 
-#define PORT_CS1 PORTC
-#define DDR_CS1 DDRC
-#define MASK_CS1 (1<<PC5)
-
 void setup_extram(void);
 
 /**
