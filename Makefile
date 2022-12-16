@@ -1,5 +1,6 @@
 # definitions
-SRCS = main.cpp usart.cpp poisson.cpp extram.cpp
+SRCS = main test_extram
+OBJS = usart.cpp poisson.cpp extram.cpp
 HDRS = usart.hpp poisson.hpp extram.hpp
 
 GXX = avr-g++
@@ -13,8 +14,8 @@ $(eval serialid=$(shell find /dev/serial/by-id/ -name "*Arduino*" | head -1))
 # help
 help:
 	@echo "USAGE: make one of the following recipies"
-	@echo "\nC Code:"
-	@ls -1 *.c | sed -e "s/\.c//"
+	@echo "\nC++ programs:"
+	@echo $(SRCS) | tr " " "\n" 
 	@echo "\nTools:"
 	@echo "screen"
 	@echo "cu"
@@ -36,19 +37,9 @@ cu:
 
 
 # C: compiling and flashing
-main: $(SRCS) $(HDRS)
+%: %.cpp $(OBJS) $(HDRS)
 	@echo "COMPILING..."
-	$(GXX) $(GCCFLAGS) $^ -o $@.bin
-	@echo "\n\n\nCONVERTING TO HEX..."
-	avr-objcopy -j .text -j .data -O ihex $@.bin $@.hex
-	@echo "\n\n\nFLASHING..."
-	avrdude -v -p m328p -c arduino -P $(serialid) -D -U flash:w:$@.hex
-	@echo "\n\n\nALL STEPS SUCCEDED!"
-
-
-test_extram: test_extram.cpp usart.cpp extram.cpp $(HDRS)
-	@echo "COMPILING..."
-	$(GXX) $(GCCFLAGS) $^ -o $@.bin
+	$(GXX) $(GCCFLAGS) $@.cpp $(OBJS) -o $@.bin
 	@echo "\n\n\nCONVERTING TO HEX..."
 	avr-objcopy -j .text -j .data -O ihex $@.bin $@.hex
 	@echo "\n\n\nFLASHING..."
