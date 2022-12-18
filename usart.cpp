@@ -91,6 +91,16 @@ void serprintmat(float* M, int n) {
     }
 }
 
+void serprintmat_extram(uint16_t addr, int n) {
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            serprintfloat(extram_read_float(addr + (n*i + j) * 4), 12, 6);
+            serprint("    ");
+        }
+        serprint("\n\r");
+    }
+}
+
 uint8_t serscan(void) {
     while ((UCSR0A & (1 << RXC0)) == 0) {
     };

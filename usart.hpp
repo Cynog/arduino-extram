@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "extram.hpp"
+
 void setup_usart(void);
 void serprintchar(char c);
 void serprint(char *s);
@@ -14,6 +16,7 @@ void serprinthex(int i);
 void serprintfloat(float f, signed char width, unsigned char prec);
 
 void serprintmat(float *M, int n);
+void serprintmat_extram(uint16_t addr, int n);
 
 uint8_t serscan(void);
 

@@ -7,6 +7,9 @@
 
 #include "usart.hpp"
 
+// external SRAM properties
+#define EXTRAM_SIZE (1<<13)
+
 // definitions for shifting register
 #define PORT_SRCLK PORTD
 #define DDR_SRCLK DDRD
