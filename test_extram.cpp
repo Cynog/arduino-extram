@@ -35,8 +35,9 @@ int main(void) {
 
         // compare
         if (read != val) {
-            serprintuint16(addrs[i]);
-            serprint("ERROR!\n\r");
+            serprint("ERROR IN STEP ");
+            serprintuint8(val);
+            serprint("!\n\r");
         }
 
         // next value

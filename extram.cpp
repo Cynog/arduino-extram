@@ -33,27 +33,22 @@ void send_addr_to_sr(uint16_t addr) {
 uint8_t extram_read(uint16_t addr) {
     // send address to shifting register
     send_addr_to_sr(addr);
-    _delay_ms(10.0);
 
+    // set OE to LOW
+    PORT_OE &= ~MASK_OE;
+    
     // set IO pins to input with pullup
     DDR_IO0 &= ~MASK_IO0;
     PORT_IO0 |= MASK_IO0;
     DDR_IO1 &= ~MASK_IO1;
     PORT_IO1 |= MASK_IO1;
-    _delay_ms(10.0);
-
-    // set OE to LOW
-    PORT_OE &= ~MASK_OE;
-    _delay_ms(10.0);
 
     // read from RAM
     uint8_t data = PIN_IO0 & MASK_IO0;
     data |= PIN_IO1 & MASK_IO1;
-    _delay_ms(10.0);
 
     // set OE back to HIGH
     PORT_OE |= MASK_OE;
-    _delay_ms(10.0);
 
     // return
     return data;
@@ -62,25 +57,20 @@ uint8_t extram_read(uint16_t addr) {
 void extram_write(uint16_t addr, uint8_t data) {
     // send address to shifting register
     send_addr_to_sr(addr);
-    _delay_ms(10.0);
 
     // set IO pins to output
     DDR_IO0 |= MASK_IO0;
     DDR_IO1 |= MASK_IO1;
-    _delay_ms(10.0);
 
     // set IO pins
     PORT_IO0 &= ~MASK_IO0;
     PORT_IO0 |= data & MASK_IO0;
     PORT_IO1 &= ~MASK_IO1;
     PORT_IO1 |= data & MASK_IO1;
-    _delay_ms(10.0);
 
     // give LOW pulse on WE
     PORT_WE &= ~MASK_WE;
-    _delay_ms(10.0);
     PORT_WE |= MASK_WE;
-    _delay_ms(10.0);
 
     // return
     return;

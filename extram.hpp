@@ -20,20 +20,20 @@
 #define PORT_IO0 PORTB
 #define PIN_IO0 PINB
 #define DDR_IO0 DDRB
-#define MASK_IO0 ((1<<PB0)|(1<<PB1)|(1<<PB2)|(1<<PB3))
+#define MASK_IO0 ((1 << PB0) | (1 << PB1) | (1 << PB2) | (1 << PB3))
 
 #define PORT_IO1 PORTD
 #define PIN_IO1 PIND
 #define DDR_IO1 DDRD
-#define MASK_IO1 ((1<<PD4)|(1<<PD5)|(1<<PD6)|(1<<PD7))
+#define MASK_IO1 ((1 << PD4) | (1 << PD5) | (1 << PD6) | (1 << PD7))
 
 #define PORT_OE PORTB
 #define DDR_OE DDRB
-#define MASK_OE (1<<PB4)
+#define MASK_OE (1 << PB4)
 
 #define PORT_WE PORTB
 #define DDR_WE DDRB
-#define MASK_WE (1<<PB5)
+#define MASK_WE (1 << PB5)
 
 void setup_extram(void);
 
@@ -45,7 +45,9 @@ void setup_extram(void);
 void send_addr_to_sr(uint16_t addr);
 
 uint8_t extram_read(uint16_t addr);
-
 void extram_write(uint16_t addr, uint8_t data);
+
+float extram_read_float(uint16_t addr);
+void extram_write_float(uint16_t addr, float data);
 
 #endif  // _EXTRAM_H_
