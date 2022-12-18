@@ -36,7 +36,7 @@ uint8_t extram_read(uint16_t addr) {
 
     // set OE to LOW
     PORT_OE &= ~MASK_OE;
-    
+
     // set IO pins to input with pullup
     DDR_IO0 &= ~MASK_IO0;
     PORT_IO0 |= MASK_IO0;
@@ -71,6 +71,37 @@ void extram_write(uint16_t addr, uint8_t data) {
     // give LOW pulse on WE
     PORT_WE &= ~MASK_WE;
     PORT_WE |= MASK_WE;
+
+    // return
+    return;
+}
+
+float extram_read_float(uint16_t addr) {
+    // variable to return
+    float data;
+
+    // pointer to read the single bytes
+    uint8_t *ptr = (uint8_t *)&data;
+
+    // read the float
+    for (uint8_t i = 0; i < 4; i++) {
+        ptr[i] = extram_read(addr);
+        addr++;
+    }
+
+    // return
+    return data;
+}
+
+void extram_write_float(uint16_t addr, float data) {
+    // pointer to write single bytes
+    uint8_t *ptr = (uint8_t *)&data;
+
+    // write the float
+    for (uint8_t i = 0; i < 4; i++) {
+        extram_write(addr, ptr[i]);
+        addr++;
+    }
 
     // return
     return;
