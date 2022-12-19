@@ -1,14 +1,13 @@
-#ifndef _EXTRAM_H_
-#define _EXTRAM_H_
+#pragma once
 
 #include <avr/io.h>
 #include <stdio.h>
 #include <util/delay.h>
 
-#include "usart.hpp"
+#include "lib_usart.hpp"
 
 // external SRAM properties
-#define EXTRAM_SIZE (1<<13)
+#define EXTRAM_SIZE (1 << 13)
 
 // definitions for shifting register
 #define PORT_SRCLK PORTD
@@ -52,5 +51,3 @@ void extram_write(uint16_t addr, uint8_t data);
 
 float extram_read_float(uint16_t addr);
 void extram_write_float(uint16_t addr, float data);
-
-#endif  // _EXTRAM_H_

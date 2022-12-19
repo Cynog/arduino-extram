@@ -1,4 +1,4 @@
-#include "poisson.hpp"
+#include "lib_poisson.hpp"
 
 // source function
 float f_source(float x, float y) {

@@ -4,13 +4,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "extram.hpp"
+#include "lib_extram.hpp"
 
 void setup_usart(void);
 void serprintchar(char c);
 void serprint(char *s);
 void serprintuint8(uint8_t val);
 void serprintuint16(uint16_t val);
+void serprintuint8(uint8_t val);
+void serprintuint32(uint32_t val);
 void serprintint(int i);
 void serprinthex(int i);
 void serprintfloat(float f, signed char width, unsigned char prec);

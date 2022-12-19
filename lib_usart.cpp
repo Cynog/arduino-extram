@@ -1,4 +1,4 @@
-#include "usart.hpp"
+#include "lib_usart.hpp"
 
 void setup_usart(void) {
     UBRR0L = 103;                          // baud rate 9600
@@ -63,6 +63,26 @@ void serprintuint16(uint16_t val) {
         serprintchar('0');
 }
 
+void serprintuint32(uint32_t val) {
+    uint32_t div = 1000000000;
+    uint32_t mod;
+    uint8_t sent = 0;
+
+    for (int i = 0; i < 10; i++) {
+        mod = val % div;
+        uint8_t c = val / div;
+        if (c != 0 || sent) {
+            serprintchar(c + 48);
+            sent = 1;
+        }
+        div /= 10;
+        val = mod;
+    }
+
+    if (sent == 0)
+        serprintchar('0');
+}
+
 void serprintint(int i) {
     char s[16];
     sprintf(s, "%d", i);
@@ -94,7 +114,7 @@ void serprintmat(float* M, int n) {
 void serprintmat_extram(uint16_t addr, int n) {
     for (int i = 0; i < n; i++) {
         for (int j = 0; j < n; j++) {
-            serprintfloat(extram_read_float(addr + (n*i + j) * 4), 12, 6);
+            serprintfloat(extram_read_float(addr + (n * i + j) * 4), 12, 6);
             serprint("    ");
         }
         serprint("\n\r");

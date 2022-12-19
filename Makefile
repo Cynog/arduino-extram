@@ -1,7 +1,7 @@
 # definitions
 SRCS = main test_extram
-OBJS = usart.cpp poisson.cpp extram.cpp
-HDRS = usart.hpp poisson.hpp extram.hpp
+OBJS = lib_usart.cpp lib_poisson.cpp lib_extram.cpp lib_time.cpp
+HDRS = lib_usart.hpp lib_poisson.hpp lib_extram.hpp lib_time.hpp
 
 GXX = avr-g++
 GCCFLAGS = -Wall -g -Os -mmcu=atmega328 -DF_CPU=16000000UL
