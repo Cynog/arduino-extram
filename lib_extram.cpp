@@ -20,14 +20,11 @@ void send_addr_to_sr(uint16_t addr) {
             PORT_SER |= MASK_SER;
         else  // send 0
             PORT_SER &= ~MASK_SER;
+        
         // read into shifting register
         PORT_SRCLK |= MASK_SRCLK;
         PORT_SRCLK &= ~MASK_SRCLK;
     }
-
-    // required once again for refreshing the output
-    PORT_SRCLK |= MASK_SRCLK;
-    PORT_SRCLK &= ~MASK_SRCLK;
 }
 
 uint8_t extram_read(uint16_t addr) {
