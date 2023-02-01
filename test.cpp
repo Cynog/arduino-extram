@@ -8,13 +8,13 @@
 
 int main(void) {
     // initialize usart
-    setup_usart();
+    usart_setup();
 
     // initialize shifting register
-    setup_extram();
+    extram_setup();
 
     // initialize timer
-    setup_timer();
+    timer_setup();
     uint32_t t;
 
     // 256 random addresses spread over the whole external RAM with gaps of at least 4

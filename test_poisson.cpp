@@ -9,17 +9,17 @@
 
 int main(void) {
     // initialize usart
-    setup_usart();
+    usart_setup();
 
     // initialize extram
-    setup_extram();
+    extram_setup();
 
     // initialize timer
-    setup_timer();
+    timer_setup();
     uint32_t t;
 
     // testing parameters
-    int N = 13;
+    int N = 6;
     int maxit = 1000;
     float tol = 1e-6F;
 

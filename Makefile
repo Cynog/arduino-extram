@@ -1,5 +1,5 @@
 # definitions
-SRCS = main test_extram
+SRCS = test test_poisson
 OBJS = lib_usart.cpp lib_poisson.cpp lib_extram.cpp lib_time.cpp
 HDRS = lib_usart.hpp lib_poisson.hpp lib_extram.hpp lib_time.hpp
 

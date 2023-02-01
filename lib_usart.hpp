@@ -6,7 +6,7 @@
 
 #include "lib_extram.hpp"
 
-void setup_usart(void);
+void usart_setup(void);
 void serprintchar(char c);
 void serprint(char *s);
 void serprintuint8(uint8_t val);

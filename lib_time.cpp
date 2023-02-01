@@ -9,7 +9,7 @@ ISR(TIMER1_COMPA_vect) {
 }
 
 // initialize Timer/Counter1 to 1ms compare mach A interrupt
-void setup_timer(void) {
+void timer_setup(void) {
     // timer 1 setup
     TCCR1B = (1 << WGM12) | (1 << CS11);  // CTC mode with OCR1A and prescaling of 8
     TIMSK1 = (1 << OCIE1A);               // compare match A interrupt

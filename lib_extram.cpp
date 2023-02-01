@@ -1,6 +1,6 @@
 #include "lib_extram.hpp"
 
-void setup_extram(void) {
+void extram_setup(void) {
     // shifting register pins
     DDR_SER |= MASK_SER;
     DDR_SRCLK |= MASK_SRCLK;
@@ -15,7 +15,7 @@ void setup_extram(void) {
 
 void send_addr_to_sr(uint16_t addr) {
     // send each bit starting from most significant
-    for (uint16_t i = (1 << 12); i > 0; i >>= 1) {
+    for (uint16_t i = (1 << ADDR_MSB); i > 0; i >>= 1) {
         if (addr & i)  // send 1
             PORT_SER |= MASK_SER;
         else  // send 0
