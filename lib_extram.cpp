@@ -20,7 +20,7 @@ void send_addr_to_sr(uint16_t addr) {
             PORT_SER |= MASK_SER;
         else  // send 0
             PORT_SER &= ~MASK_SER;
-        
+
         // read into shifting register
         PORT_SRCLK |= MASK_SRCLK;
         PORT_SRCLK &= ~MASK_SRCLK;
@@ -68,6 +68,73 @@ void extram_write(uint16_t addr, uint8_t data) {
     // give LOW pulse on WE
     PORT_WE &= ~MASK_WE;
     PORT_WE |= MASK_WE;
+
+    // return
+    return;
+}
+
+uint16_t extram_read_uint16(uint16_t addr) {
+    // variable to return
+    uint16_t data;
+
+    // pointer to read the single bytes
+    uint8_t *ptr = (uint8_t *)&data;
+
+    // send address to shifting register
+    send_addr_to_sr(addr);
+
+    // read the uint8
+    for (uint8_t i = 0; i < 2; i++) {
+        // set OE to LOW
+        PORT_OE &= ~MASK_OE;
+
+        // set IO pins to input with pullup
+        DDR_IO0 &= ~MASK_IO0;
+        PORT_IO0 |= MASK_IO0;
+        DDR_IO1 &= ~MASK_IO1;
+        PORT_IO1 |= MASK_IO1;
+
+        // read from RAM
+        ptr[i] = PIN_IO0 & MASK_IO0;
+        ptr[i] |= PIN_IO1 & MASK_IO1;
+
+        // set OE back to HIGH
+        PORT_OE |= MASK_OE;
+
+        // next adress
+        PORT_SER |= MASK_SER;
+    }
+
+    // return
+    return data;
+}
+
+void extram_write_uint16(uint16_t addr, uint16_t data) {
+    // pointer to write single bytes
+    uint8_t *ptr = (uint8_t *)&data;
+
+    // send address to shifting register
+    send_addr_to_sr(addr);
+
+    // write the uint8
+    for (uint8_t i = 0; i < 2; i++) {
+        // set IO pins to output
+        DDR_IO0 |= MASK_IO0;
+        DDR_IO1 |= MASK_IO1;
+
+        // set IO pins
+        PORT_IO0 &= ~MASK_IO0;
+        PORT_IO0 |= ptr[i] & MASK_IO0;
+        PORT_IO1 &= ~MASK_IO1;
+        PORT_IO1 |= ptr[i] & MASK_IO1;
+
+        // give LOW pulse on WE
+        PORT_WE &= ~MASK_WE;
+        PORT_WE |= MASK_WE;
+
+        // next adress
+        PORT_SER |= MASK_SER;
+    }
 
     // return
     return;

@@ -7,3 +7,6 @@
 
 void sort_bubble_uint8(uint8_t* list, uint16_t n);
 void sort_bubble_extram_uint8(uint16_t addr, uint16_t n);
+
+void sort_bubble_uint16(uint16_t* list, uint16_t n);
+void sort_bubble_extram_uint16(uint16_t addr, uint16_t n);

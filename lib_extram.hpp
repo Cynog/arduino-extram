@@ -7,7 +7,7 @@
 #include "lib_usart.hpp"
 
 // external SRAM properties
-#define ADDR_MSB 12 // most significant bit of EXTRAM addresses
+#define ADDR_MSB 12  // most significant bit of EXTRAM addresses
 #define EXTRAM_SIZE (1 << 13)
 
 // definitions for shifting register
@@ -38,11 +38,10 @@
 #define DDR_WE DDRB
 #define MASK_WE (1 << PB5)
 
-
 /**
  * @brief Initialize IO-pins to communicate with EXTRAM
 
- * 
+ *
  */
 void extram_setup(void);
 
@@ -55,7 +54,7 @@ void send_addr_to_sr(uint16_t addr);
 
 /**
  * @brief Read a Byte stored in address addr on EXTRAM
- * 
+ *
  * @param addr EXTRAM address
  * @return uint8_t Byte read
  */
@@ -63,15 +62,19 @@ uint8_t extram_read(uint16_t addr);
 
 /**
  * @brief Write a Byte to address addr on EXTRAM
- * 
+ *
  * @param addr EXTRAM address
  * @param data Byte to write
  */
 void extram_write(uint16_t addr, uint8_t data);
 
+// TODO performance improvement idea which also greatly works for float
+uint16_t extram_read_uint16(uint16_t addr);
+void extram_write_uint16(uint16_t addr, uint16_t data);
+
 /**
  * @brief Read a float(4 Byte) stored in addresses addr:addr+3 on EXTRAM
- * 
+ *
  * @param addr EXTRAM address
  * @return float Float read
  */
@@ -80,7 +83,7 @@ float extram_read_float(uint16_t addr);
 /**
  * @brief Write a float(4 Byte) to addresses addr:addr+3 on EXTRAM
  * WARNING: It is the users responsibility to avoid overlapping
- * 
+ *
  * @param addr EXTRAM address
  * @param data Float to write
  */
