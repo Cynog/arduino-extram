@@ -19,7 +19,7 @@ int main(void) {
     uint32_t t;
 
     // testing parameters
-    int N = 6;
+    int N = 10;
     int maxit = 1000;
     float tol = 1e-6F;
 
@@ -53,6 +53,20 @@ int main(void) {
     // solve poisson equation
     timer_reset();
     retval = solve_extram(N, f_source, maxit, tol, phi_addr);
+    t = timer_getms();
+    serprint("flag = ");
+    serprintint(retval.flag);
+    serprint("\n\riter = ");
+    serprintint(retval.iter);
+    serprint("\n\rresidual = ");
+    serprintfloat(retval.residual, 0, 8);
+    serprint("\n\relapsed time = ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    // solve buffered poisson equation
+    timer_reset();
+    retval = solve_extram_buffered(N, f_source, maxit, tol, phi_addr);
     t = timer_getms();
     serprint("flag = ");
     serprintint(retval.flag);

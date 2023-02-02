@@ -6,7 +6,12 @@
 
 #include "lib_extram.hpp"
 
+/**
+ * @brief Initialize USART with baud rate 3600 in transmit and receive mode
+ *
+ */
 void usart_setup(void);
+
 void serprintchar(char c);
 void serprint(char *s);
 void serprintuint8(uint8_t val);
