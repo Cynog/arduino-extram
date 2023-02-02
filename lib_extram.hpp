@@ -53,38 +53,82 @@ void extram_setup(void);
 void send_addr_to_sr(uint16_t addr);
 
 /**
- * @brief Read a Byte stored in address addr on EXTRAM
+ * @brief Read a variable of type T from address addr on EXTRAM
  *
  * @param addr EXTRAM address
- * @return uint8_t Byte read
+ * @return T variable read
  */
-uint8_t extram_read(uint16_t addr);
+template <typename T>
+T extram_read(uint16_t addr) {
+    // variable to return
+    uint16_t data;
+
+    // pointer to read the single bytes
+    uint8_t *ptr = (uint8_t *)&data;
+
+    // send starting address to shifting register
+    send_addr_to_sr(addr);
+
+    // read the uint8
+    for (uint8_t i = 0; i < sizeof(T); i++) {
+        // set OE to LOW
+        PORT_OE &= ~MASK_OE;
+
+        // set IO pins to input with pullup
+        DDR_IO0 &= ~MASK_IO0;
+        PORT_IO0 |= MASK_IO0;
+        DDR_IO1 &= ~MASK_IO1;
+        PORT_IO1 |= MASK_IO1;
+
+        // read from RAM
+        ptr[i] = PIN_IO0 & MASK_IO0;
+        ptr[i] |= PIN_IO1 & MASK_IO1;
+
+        // set OE back to HIGH
+        PORT_OE |= MASK_OE;
+
+        // next address
+        PORT_SER |= MASK_SER;
+    }
+
+    // return
+    return data;
+}
 
 /**
- * @brief Write a Byte to address addr on EXTRAM
+ * @brief Write a variable of type T to address addr on EXTRAM
  *
  * @param addr EXTRAM address
- * @param data Byte to write
+ * @param data variable to write
  */
-void extram_write(uint16_t addr, uint8_t data);
+template <typename T>
+void extram_write(uint16_t addr, T data) {
+    // pointer to write single bytes
+    uint8_t *ptr = (uint8_t *)&data;
 
-// TODO performance improvement idea which also greatly works for float
-uint16_t extram_read_uint16(uint16_t addr);
-void extram_write_uint16(uint16_t addr, uint16_t data);
+    // send starting address to shifting register
+    send_addr_to_sr(addr);
 
-/**
- * @brief Read a float(4 Byte) stored in addresses addr:addr+3 on EXTRAM
- *
- * @param addr EXTRAM address
- * @return float Float read
- */
-float extram_read_float(uint16_t addr);
+    // write the uint8
+    for (uint8_t i = 0; i < sizeof(T); i++) {
+        // set IO pins to output
+        DDR_IO0 |= MASK_IO0;
+        DDR_IO1 |= MASK_IO1;
 
-/**
- * @brief Write a float(4 Byte) to addresses addr:addr+3 on EXTRAM
- * WARNING: It is the users responsibility to avoid overlapping
- *
- * @param addr EXTRAM address
- * @param data Float to write
- */
-void extram_write_float(uint16_t addr, float data);
+        // set IO pins
+        PORT_IO0 &= ~MASK_IO0;
+        PORT_IO0 |= ptr[i] & MASK_IO0;
+        PORT_IO1 &= ~MASK_IO1;
+        PORT_IO1 |= ptr[i] & MASK_IO1;
+
+        // give LOW pulse on WE
+        PORT_WE &= ~MASK_WE;
+        PORT_WE |= MASK_WE;
+
+        // next address
+        PORT_SER |= MASK_SER;
+    }
+
+    // return
+    return;
+}

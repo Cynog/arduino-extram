@@ -22,47 +22,50 @@ int main(void) {
     timer_setup();
     uint32_t t;
 
+    // number of values
+    uint16_t n = 256;
+
     ////////////////* INTERNAL RAM *////////////////
     serprint("INTERNAL RAM\n\r");
 
     // initialize list for sorting
-    uint16_t list[256];
-    for (uint16_t i = 0; i < 256; i++) {
+    uint16_t list[n];
+    for (uint16_t i = 0; i < n; i++) {
         list[i] = pgm_read_word(LIST + i);
     }
 
     // sort
     timer_reset();
-    sort_bubble_uint16(list, 256);
+    sort_bubble<uint16_t>(list, n);
     t = timer_getms();
     serprintuint32(t);
     serprint(" ms\n\r");
 
     // print list
-    // for (uint16_t i = 0; i < 256; i++) {
-    //    serprintuint16(list[i]);
-    //    serprint("\n\r");
-    //}
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint16(list[i]);
+        serprint("\n\r");
+    }
 
     ////////////////* EXTERNAL RAM *////////////////
     serprint("EXTERNAL RAM\n\r");
 
     // initialize list for sorting
     uint16_t addr = 0;
-    for (uint16_t i = 0; i < 256; i++) {
-        extram_write_uint16(addr + i * 2, pgm_read_word(LIST + i));
+    for (uint16_t i = 0; i < n; i++) {
+        extram_write<uint16_t>(addr + i * 2, pgm_read_word(LIST + i));
     }
 
     // sort
     timer_reset();
-    sort_bubble_extram_uint16(addr, 256);
+    sort_bubble_extram<uint16_t>(addr, n);
     t = timer_getms();
     serprintuint32(t);
     serprint(" ms\n\r");
 
     // print list
-     for (uint16_t i = 0; i < 256; i++) {
-        serprintuint16(extram_read_uint16(addr + i * 2));
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint16(extram_read<uint16_t>(addr + i * 2));
         serprint("\n\r");
     }
 
