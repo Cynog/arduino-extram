@@ -10,7 +10,7 @@ int main(void) {
     // initialize usart
     usart_setup();
 
-    // initialize shifting register
+    // initialize extram
     extram_setup();
 
     // initialize timer
