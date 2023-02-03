@@ -11,13 +11,17 @@
 #define EXTRAM_SIZE (1 << 13)
 
 // definitions for shifting register
-#define PORT_SRCLK PORTD
-#define DDR_SRCLK DDRD
-#define MASK_SRCLK (1 << PD2)
+#define PORT_SRCLK PORTC
+#define DDR_SRCLK DDRC
+#define MASK_SRCLK (1 << PC3)
 
-#define PORT_SER PORTD
-#define DDR_SER DDRD
-#define MASK_SER (1 << PD3)
+#define PORT_SER PORTC
+#define DDR_SER DDRC
+#define MASK_SER (1 << PC2)
+
+#define PORT_ADDR012 PORTC
+#define DDR_ADDR012 DDRC
+#define MASK_ADDR012 ((1 << PC0) | (1 << PC1) | (1 << PC2))
 
 // definitions for external SRAM
 #define PORT_IO0 PORTB
@@ -61,16 +65,20 @@ void send_addr_to_sr(uint16_t addr);
 template <typename T>
 T extram_read(uint16_t addr) {
     // variable to return
-    uint16_t data;
+    T data;
 
     // pointer to read the single bytes
-    uint8_t *ptr = (uint8_t *)&data;
+    uint8_t *ptr = reinterpret_cast<uint8_t *>(&data);
 
     // send starting address to shifting register
     send_addr_to_sr(addr);
 
-    // read the uint8
+    // read the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
+        // least significant bits of address
+        PORT_ADDR012 &= ~MASK_ADDR012;
+        PORT_ADDR012 |= MASK_ADDR012 & (addr + i);
+
         // set OE to LOW
         PORT_OE &= ~MASK_OE;
 
@@ -86,9 +94,6 @@ T extram_read(uint16_t addr) {
 
         // set OE back to HIGH
         PORT_OE |= MASK_OE;
-
-        // next address
-        PORT_SER |= MASK_SER;
     }
 
     // return
@@ -104,13 +109,17 @@ T extram_read(uint16_t addr) {
 template <typename T>
 void extram_write(uint16_t addr, T data) {
     // pointer to write single bytes
-    uint8_t *ptr = (uint8_t *)&data;
+    uint8_t *ptr = reinterpret_cast<uint8_t *>(&data);
 
     // send starting address to shifting register
     send_addr_to_sr(addr);
 
-    // write the uint8
+    // write the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
+        // least significant bits of address
+        PORT_ADDR012 &= ~MASK_ADDR012;
+        PORT_ADDR012 |= MASK_ADDR012 & (addr + i);
+
         // set IO pins to output
         DDR_IO0 |= MASK_IO0;
         DDR_IO1 |= MASK_IO1;
@@ -124,9 +133,6 @@ void extram_write(uint16_t addr, T data) {
         // give LOW pulse on WE
         PORT_WE &= ~MASK_WE;
         PORT_WE |= MASK_WE;
-
-        // next address
-        PORT_SER |= MASK_SER;
     }
 
     // return

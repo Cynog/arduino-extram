@@ -17,21 +17,21 @@ int main(void) {
     timer_setup();
     uint32_t t;
 
-    // 256 random addresses spread over the whole external RAM with gaps of at least 4
-    uint16_t addrs[] = {5060, 6748, 7764, 4516, 4316, 8084, 5896, 236, 4640, 3420, 5992, 2480, 3852, 2756, 3392, 5476, 1248, 2012, 7532, 3900, 3128, 2032, 5808, 8152, 7000, 4156, 1472, 7688, 3100, 7232, 1664, 2076, 1780, 1040, 844, 3480, 7776, 2968, 2908, 7400, 1652, 272, 6736, 920, 6844, 6924, 6272, 4816, 3568, 1732, 6644, 1256, 1428, 6304, 4496, 1528, 432, 1052, 1208, 3332, 3432, 7124, 5224, 8108, 1900, 5156, 8072, 4672, 4748, 7864, 2024, 2436, 5220, 4280, 4980, 3628, 2404, 4364, 20, 3396, 1172, 420, 1488, 2660, 2704, 5452, 7092, 7212, 3812, 4060, 2572, 3272, 5708, 860, 8156, 5520, 2100, 7972, 4968, 4604, 1692, 5792, 8004, 5128, 2376, 4208, 4836, 56, 36, 1284, 1672, 4020, 4360, 5524, 5312, 3084, 5944, 4892, 1808, 8188, 5076, 3828, 6856, 6836, 3056, 112, 4064, 5064, 4008, 2948, 4224, 5624, 3816, 1300, 612, 928, 52, 3672, 1580, 5124, 4620, 5692, 3252, 4436, 1988, 3452, 4292, 5088, 1104, 7156, 7840, 6744, 584, 1504, 1936, 2648, 2452, 1028, 872, 7740, 3308, 6108, 5032, 6524, 5412, 7952, 5296, 6952, 2784, 6472, 1828, 2964, 5436, 1044, 3080, 1184, 2576, 940, 468, 6300, 7948, 7544, 6116, 5404, 7860, 3264, 3708, 1292, 8016, 8012, 2980, 7716, 6156, 192, 1896, 6656, 2920, 4520, 6452, 3148, 4188, 2484, 7508, 7796, 7568, 6612, 3368, 144, 2512, 5844, 6676, 1400, 5268, 4068, 2824, 804, 6432, 6600, 7428, 1524, 3312, 3904, 848, 4896, 7556, 2592, 2972, 5080, 6144, 1572, 716, 7932, 3288, 4960, 7036, 1688, 6816, 3600, 6044, 2424, 2632, 140, 836, 4872, 1848, 3436, 1128, 156, 8168, 5072, 3572, 7108, 5648, 4320, 216, 4964};
+    // 256 random addresses spread over the whole external RAM with addrs[i] % 8 == 0 for all i
+    uint16_t addrs[] = {2584, 5016, 7032, 2048, 1048, 1304, 992, 3064, 1208, 5312, 1752, 7136, 1240, 1536, 4136, 3544, 216, 3840, 4912, 2008, 6392, 7304, 6424, 1816, 5608, 2416, 5088, 6584, 2328, 8168, 968, 2352, 3920, 7952, 6672, 4016, 7448, 328, 6224, 6456, 1040, 2024, 3168, 6800, 1904, 5736, 5232, 872, 6608, 472, 2368, 272, 6712, 7712, 6440, 5120, 2064, 8104, 800, 1088, 4816, 1648, 8152, 5032, 3672, 5344, 1000, 6496, 1584, 552, 5840, 6408, 3712, 4344, 1344, 4768, 5872, 3184, 7432, 3048, 5304, 6032, 2400, 3936, 2192, 5848, 4096, 1128, 6024, 7640, 920, 3280, 3832, 6656, 2240, 6256, 3872, 1224, 1848, 4224, 5568, 5624, 4240, 8072, 7784, 1712, 2384, 856, 6312, 7528, 4512, 4600, 5984, 4856, 7648, 752, 5512, 3328, 960, 5000, 5656, 1184, 4880, 4104, 2896, 4416, 8080, 3952, 4528, 4504, 5920, 4384, 6136, 7744, 8144, 4432, 7336, 1368, 5040, 5320, 2600, 6448, 2272, 1064, 656, 1528, 3136, 6592, 1376, 2264, 1096, 3720, 3448, 4616, 6808, 1928, 5600, 96, 496, 5976, 1472, 1320, 4664, 3032, 3680, 696, 1576, 4992, 5648, 2744, 1856, 2952, 5616, 2768, 2792, 4032, 7992, 1408, 1504, 3880, 7496, 7104, 1136, 416, 5448, 1352, 4864, 288, 1912, 4848, 4984, 344, 3400, 7144, 5360, 264, 1960, 4248, 5688, 1512, 1232, 6832, 2760, 2120, 6952, 1440, 4544, 8120, 176, 3480, 8184, 8040, 5776, 4184, 6400, 5144, 4040, 5296, 2736, 80, 3848, 280, 704, 2168, 5200, 3056, 4264, 5992, 16, 6080, 6728, 7424, 5080, 2848, 4440, 5368, 3744, 2472, 1592, 7384, 7120, 584, 688, 88, 3384, 6936, 5248, 4128, 6160, 2832, 1008, 3688, 2552, 6464, 4576, 1432};
 
     ////////////////////////////////* UNSIGNED 8-BIT INTEGERS *////////////////////////////////
     // write SRAM
     serprint("UNSIGNED INT 8-BIT\n\r");
     serprint("WRITING... ");
-    uint8_t val = 0;
+    uint8_t val_uint8 = 0;
     timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // write
-        extram_write(addrs[i], val);
+        extram_write<uint8_t>(addrs[i], val_uint8);
 
         // next value
-        val++;
+        val_uint8++;
     }
     t = timer_getms();
     serprint("FINISHED! ");
@@ -40,22 +40,152 @@ int main(void) {
 
     // read SRAM again
     serprint("READING... ");
-    val = 0;
+    val_uint8 = 0;
     timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // read
-        uint8_t read = extram_read(addrs[i]);
+        uint8_t read = extram_read<uint8_t>(addrs[i]);
 
         // compare
-        if (read != val) {
+        if (read != val_uint8) {
             serprint("ERROR ");
             serprintuint16(i);
-            serprint(" ");
+            serprint("\n\r");
+            // serprint(" ");
+            // break;
+        }
+
+        // next value
+        val_uint8++;
+    }
+    t = timer_getms();
+    serprint("FINISHED! ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    ////////////////////////////////* UNSIGNED 16-BIT INTEGERS *////////////////////////////////
+    // write SRAM
+    serprint("\n\r\n\rUNSIGNED INT 16-BIT\n\r");
+    serprint("WRITING... ");
+    uint16_t val_uint16 = 0;
+    timer_reset();
+    for (uint16_t i = 0; i < 256; i++) {
+        // write
+        extram_write<uint16_t>(addrs[i], val_uint16);
+
+        // next value
+        val_uint16 += 127;
+    }
+    t = timer_getms();
+    serprint("FINISHED! ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    // read SRAM again
+    serprint("READING... ");
+    val_uint16 = 0;
+    timer_reset();
+    for (uint16_t i = 0; i < 256; i++) {
+        // read
+        uint16_t read = extram_read<uint16_t>(addrs[i]);
+
+        // compare
+        if (read != val_uint16) {
+            serprint("ERROR ");
+            serprintuint16(i);
+            serprint("\n\r");
+            // serprint(" ");
+            // break;
+        }
+
+        // next value
+        val_uint16 += 127;
+    }
+    t = timer_getms();
+    serprint("FINISHED! ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    ////////////////////////////////* UNSIGNED 32-BIT INTEGERS *////////////////////////////////
+    // write SRAM
+    serprint("\n\r\n\rUNSIGNED INT 32-BIT\n\r");
+    serprint("WRITING... ");
+    uint32_t val_uint32 = 0;
+    timer_reset();
+    for (uint16_t i = 0; i < 256; i++) {
+        // write
+        extram_write<uint32_t>(addrs[i], val_uint32);
+
+        // next value
+        val_uint32 += 32767;
+    }
+    t = timer_getms();
+    serprint("FINISHED! ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    // read SRAM again
+    serprint("READING... ");
+    val_uint32 = 0;
+    timer_reset();
+    for (uint16_t i = 0; i < 256; i++) {
+        // read
+        uint32_t read = extram_read<uint32_t>(addrs[i]);
+
+        // compare
+        if (read != val_uint32) {
+            serprint("ERROR ");
+            serprintuint16(i);
+            serprint("\n\r");
+            // serprint(" ");
+            // break;
+        }
+
+        // next value
+        val_uint32 += 32767;
+    }
+    t = timer_getms();
+    serprint("FINISHED! ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    ////////////////////////////////* UNSIGNED 64-BIT INTEGERS *////////////////////////////////
+    // write SRAM
+    serprint("\n\r\n\rUNSIGNED INT 64-BIT\n\r");
+    serprint("WRITING... ");
+    uint64_t val_uint64 = 0;
+    timer_reset();
+    for (uint64_t i = 0; i < 256; i++) {
+        // write
+        extram_write<uint64_t>(addrs[i], val_uint64);
+
+        // next value
+        val_uint64 += 2147483647;
+    }
+    t = timer_getms();
+    serprint("FINISHED! ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    // read SRAM again
+    serprint("READING... ");
+    val_uint64 = 0;
+    timer_reset();
+    for (uint16_t i = 0; i < 256; i++) {
+        // read
+        uint64_t read = extram_read<uint64_t>(addrs[i]);
+
+        // compare
+        if (read != val_uint64) {
+            serprint("ERROR ");
+            serprintuint16(i);
+            serprint("\n\r");
+            // serprint(" ");
             break;
         }
 
         // next value
-        val++;
+        val_uint64 += 2147483647;
     }
     t = timer_getms();
     serprint("FINISHED! ");
@@ -70,7 +200,7 @@ int main(void) {
     timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // write
-        extram_write_float(addrs[i], val_float);
+        extram_write<float>(addrs[i], val_float);
 
         // next value
         val_float += M_PI;
@@ -86,13 +216,14 @@ int main(void) {
     timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // read
-        float read = extram_read_float(addrs[i]);
+        float read = extram_read<float>(addrs[i]);
 
         // compare
         if (read != val_float) {
             serprint("ERROR ");
-            serprintuint16(i);
-            serprint(" ");
+            // serprintuint16(i);
+            // serprint("\n\r");
+            //  serprint(" ");
             break;
         }
 
