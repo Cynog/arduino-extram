@@ -25,23 +25,18 @@ int main(void) {
     serprint("UNSIGNED INT 8-BIT\n\r");
     serprint("WRITING... ");
     uint8_t val_uint8 = 0;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // write
-        extram_write<uint8_t>(addrs[i], val_uint8);
+        extram_write<uint8_t>(val_uint8, addrs[i]);
 
         // next value
         val_uint8++;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     // read SRAM again
     serprint("READING... ");
     val_uint8 = 0;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // read
         uint8_t read = extram_read<uint8_t>(addrs[i]);
@@ -51,40 +46,31 @@ int main(void) {
             serprint("ERROR ");
             serprintuint16(i);
             serprint("\n\r");
-            // serprint(" ");
-            // break;
+            break;
         }
 
         // next value
         val_uint8++;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     ////////////////////////////////* UNSIGNED 16-BIT INTEGERS *////////////////////////////////
     // write SRAM
-    serprint("\n\r\n\rUNSIGNED INT 16-BIT\n\r");
+    serprint("\n\rUNSIGNED INT 16-BIT\n\r");
     serprint("WRITING... ");
     uint16_t val_uint16 = 0;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // write
-        extram_write<uint16_t>(addrs[i], val_uint16);
+        extram_write<uint16_t>(val_uint16, addrs[i]);
 
         // next value
         val_uint16 += 127;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     // read SRAM again
     serprint("READING... ");
     val_uint16 = 0;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // read
         uint16_t read = extram_read<uint16_t>(addrs[i]);
@@ -94,40 +80,30 @@ int main(void) {
             serprint("ERROR ");
             serprintuint16(i);
             serprint("\n\r");
-            // serprint(" ");
-            // break;
+            break;
         }
-
         // next value
         val_uint16 += 127;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     ////////////////////////////////* UNSIGNED 32-BIT INTEGERS *////////////////////////////////
     // write SRAM
-    serprint("\n\r\n\rUNSIGNED INT 32-BIT\n\r");
+    serprint("\n\rUNSIGNED INT 32-BIT\n\r");
     serprint("WRITING... ");
     uint32_t val_uint32 = 0;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // write
-        extram_write<uint32_t>(addrs[i], val_uint32);
+        extram_write<uint32_t>(val_uint32, addrs[i]);
 
         // next value
         val_uint32 += 32767;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     // read SRAM again
     serprint("READING... ");
     val_uint32 = 0;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // read
         uint32_t read = extram_read<uint32_t>(addrs[i]);
@@ -137,40 +113,32 @@ int main(void) {
             serprint("ERROR ");
             serprintuint16(i);
             serprint("\n\r");
-            // serprint(" ");
-            // break;
+            //  break;
         }
 
         // next value
         val_uint32 += 32767;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     ////////////////////////////////* UNSIGNED 64-BIT INTEGERS *////////////////////////////////
     // write SRAM
-    serprint("\n\r\n\rUNSIGNED INT 64-BIT\n\r");
+    serprint("\n\rUNSIGNED INT 64-BIT\n\r");
     serprint("WRITING... ");
     uint64_t val_uint64 = 0;
-    timer_reset();
     for (uint64_t i = 0; i < 256; i++) {
         // write
-        extram_write<uint64_t>(addrs[i], val_uint64);
+        extram_write<uint64_t>(val_uint64, addrs[i]);
 
         // next value
         val_uint64 += 2147483647;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     // read SRAM again
     serprint("READING... ");
     val_uint64 = 0;
-    timer_reset();
+
     for (uint16_t i = 0; i < 256; i++) {
         // read
         uint64_t read = extram_read<uint64_t>(addrs[i]);
@@ -180,40 +148,31 @@ int main(void) {
             serprint("ERROR ");
             serprintuint16(i);
             serprint("\n\r");
-            // serprint(" ");
             break;
         }
 
         // next value
         val_uint64 += 2147483647;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     ////////////////////////////////* FLOAT *////////////////////////////////
     // write SRAM
-    serprint("\n\r\n\rFLOAT\n\r");
+    serprint("\n\rFLOAT\n\r");
     serprint("WRITING... ");
     float val_float = M_PI;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // write
-        extram_write<float>(addrs[i], val_float);
+        extram_write<float>(val_float, addrs[i]);
 
         // next value
         val_float += M_PI;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     // read SRAM again
     serprint("READING... ");
     val_float = M_PI;
-    timer_reset();
     for (uint16_t i = 0; i < 256; i++) {
         // read
         float read = extram_read<float>(addrs[i]);
@@ -221,19 +180,15 @@ int main(void) {
         // compare
         if (read != val_float) {
             serprint("ERROR ");
-            // serprintuint16(i);
-            // serprint("\n\r");
-            //  serprint(" ");
+            serprintuint16(i);
+            serprint("\n\r");
             break;
         }
 
         // next value
         val_float += M_PI;
     }
-    t = timer_getms();
-    serprint("FINISHED! ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
+    serprint("FINISHED!\n\r");
 
     // endless loop
     while (1) {

@@ -1,6 +1,6 @@
 # definitions
 SRCS = test test_sort_uint8 test_sort_uint16 test_poisson
-OBJS = lib_usart.cpp lib_extram.cpp lib_time.cpp lib_sort.cpp
+OBJS = lib_usart.cpp lib_extram.cpp lib_time.cpp
 HDRS = lib_usart.hpp lib_extram.hpp lib_time.hpp lib_sort.hpp
 
 GXX = avr-g++
