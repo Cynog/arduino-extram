@@ -1,5 +1,5 @@
 # definitions
-SRCS = test test_sort_uint8 test_sort_uint16 test_poisson
+SRCS = test test_perf test_perf_fill test_sort_uint8 test_sort_uint16 test_poisson
 OBJS = lib_usart.cpp lib_extram.cpp lib_time.cpp lib_poisson.cpp
 HDRS = lib_usart.hpp lib_extram.hpp lib_time.hpp lib_sort.hpp lib_poisson.hpp
 

@@ -16,8 +16,8 @@ void timer_setup(void);
 void timer_reset(void);
 
 /**
- * @brief Get the current value of the outer ms counter
+ * @brief Get the number of ms since the setup_timer call or the last timer_reset call
  * 
- * @return uint32_t Get the number of ms since the setup_timer call or the last timer_reset call
+ * @return uint32_t number of ms
  */
 uint32_t timer_getms(void);

@@ -28,7 +28,7 @@ void timer_reset(void) {
     timer_val = 0;
 }
 
-// get outer counter ms counter
+// get outer counter ms count
 uint32_t timer_getms(void) {
     // return elapsed time in ms
     return timer_val;
