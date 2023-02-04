@@ -38,36 +38,53 @@ int main(void) {
     timer_reset();
     sort_bubble<uint8_t>(list, n);
     t = timer_getms();
+
+    // print sorted list
+    serprint("sorted list:\n\r");
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint8(list[i]);
+        serprint("   ");
+
+        if ((i + 1) % 16 == 0)
+            serprint("\n\r");
+    }
+    serprint("\n\r");
+
+    // print time
+    serprint("elapsed time: ");
     serprintuint32(t);
     serprint(" ms\n\r");
 
-    // print list
-    for (uint16_t i = 0; i < n; i++) {
-        serprintuint8(list[i]);
-        serprint("\n\r");
-    }
-
     ////////////////* EXTERNAL RAM *////////////////
-    serprint("EXTERNAL RAM\n\r");
+    serprint("\n\r\n\rEXTERNAL RAM\n\r");
 
     // initialize list for sorting
     uint16_t addr = 0;
     for (uint16_t i = 0; i < n; i++) {
-        extram_write<uint8_t>(addr + i, pgm_read_word(LIST + i));
+        uint8_t tmp = pgm_read_word(LIST + i);
+        extram_write<uint8_t>(tmp, addr, i);
     }
 
     // sort
     timer_reset();
     sort_bubble_extram<uint8_t>(addr, n);
     t = timer_getms();
+
+    // print sorted list
+    serprint("sorted list:\n\r");
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint8(extram_read<uint8_t>(addr, i));
+        serprint("   ");
+
+        if ((i + 1) % 16 == 0)
+            serprint("\n\r");
+    }
+    serprint("\n\r");
+
+    // print time
+    serprint("elapsed time: ");
     serprintuint32(t);
     serprint(" ms\n\r");
-
-    // print list
-    for (uint16_t i = 0; i < n; i++) {
-        serprintuint8(extram_read<uint8_t>(addr + i));
-        serprint("\n\r");
-    }
 
     // endless loop
     while (1) {
