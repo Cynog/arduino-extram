@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/lib/avr/include"
+                "/usr/lib/avr/include/**"
             ],
             "defines": ["__AVR_ATmega328P__"],
             "compilerPath": "/usr/bin/avr-g++",
