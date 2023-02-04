@@ -16,7 +16,6 @@ float f_source(float x, float y) {
         return 0.0;
 }
 
-// jacobi solver for the 2d poisson equation laplace(phi) = f on the unit square with dirichlet boundary conditions using internal RAM
 struct output solve(int N, float (*f_source)(float, float), int maxit, float tol, float *phi) {
     // prepare return values
     struct output retval;
@@ -116,7 +115,8 @@ struct output solve_extram(int N, float (*f_source)(float, float), int maxit, fl
     // initialize phi to 0
     for (int i = 0; i < N + 2; i++) {
         for (int j = 0; j < N + 2; j++) {
-            extram_write_float(phi_addr + ((N + 2) * i + j) * 4, 0.0);
+            float tmp = 0.0;
+            extram_write<float>(tmp, phi_addr + ((N + 2) * i + j) * 4);
         }
     }
 
@@ -126,7 +126,8 @@ struct output solve_extram(int N, float (*f_source)(float, float), int maxit, fl
         float x = (float)(i) / (float)(N + 1);
         for (int j = 1; j < N + 1; j++) {
             float y = (float)(j) / (float)(N + 1);
-            extram_write_float(f_vals_addr + (N * (i - 1) + (j - 1)) * 4, f_source(x, y) / square_Np2);
+            float tmp = f_source(x, y) / square_Np2;
+            extram_write<float>(tmp, f_vals_addr + (N * (i - 1) + (j - 1)) * 4);
         }
     }
 
@@ -134,19 +135,19 @@ struct output solve_extram(int N, float (*f_source)(float, float), int maxit, fl
     for (int k = 1; k <= maxit; k++) {
         // initialize phi_old
         for (int j = 1; j < N + 1; j++)
-            phi_old[j] = extram_read_float(phi_addr + j * 4);
+            phi_old[j] = extram_read<float>(phi_addr + j * 4);
 
         // update phi and calculate change
         float scp = 0.0;
         for (int i = 1; i < N + 1; i++) {
-            phi_old[0] = extram_read_float(phi_addr + ((N + 2) * i) * 4);
+            phi_old[0] = extram_read<float>(phi_addr + ((N + 2) * i) * 4);
 
             for (int j = 1; j < N + 1; j++) {
                 // update phi
-                float phi_old_buf = extram_read_float(phi_addr + ((N + 2) * i + j) * 4);  // load middle
-                float phi_new = 0.25 * (extram_read_float(phi_addr + ((N + 2) * (i + 1) + j) * 4) + phi_old[j] + extram_read_float(phi_addr + ((N + 2) * i + (j + 1)) * 4) + phi_old[j - 1] - extram_read_float(f_vals_addr + (N * (i - 1) + (j - 1)) * 4));
-                extram_write_float(phi_addr + ((N + 2) * i + j) * 4, phi_new);  // save middle grid update
-                phi_old[j] = phi_old_buf;                                       // save middle for up and left later
+                float phi_old_buf = extram_read<float>(phi_addr + ((N + 2) * i + j) * 4);  // load middle
+                float phi_new = 0.25 * (extram_read<float>(phi_addr + ((N + 2) * (i + 1) + j) * 4) + phi_old[j] + extram_read<float>(phi_addr + ((N + 2) * i + (j + 1)) * 4) + phi_old[j - 1] - extram_read<float>(f_vals_addr + (N * (i - 1) + (j - 1)) * 4));
+                extram_write<float>(phi_new, phi_addr + ((N + 2) * i + j) * 4);  // save middle grid update
+                phi_old[j] = phi_old_buf;                                        // save middle for up and left later
 
                 // calculate change
                 float diff = phi_new - phi_old_buf;
@@ -194,7 +195,8 @@ struct output solve_extram_buffered(int N, float (*f_source)(float, float), int 
     // initialize phi to 0
     for (int i = 0; i < N + 2; i++) {
         for (int j = 0; j < N + 2; j++) {
-            extram_write_float(phi_addr + ((N + 2) * i + j) * 4, 0.0);
+            float tmp = 0.0;
+            extram_write<float>(tmp, phi_addr + ((N + 2) * i + j) * 4);
         }
     }
 
@@ -204,7 +206,8 @@ struct output solve_extram_buffered(int N, float (*f_source)(float, float), int 
         float x = (float)(i) / (float)(N + 1);
         for (int j = 1; j < N + 1; j++) {
             float y = (float)(j) / (float)(N + 1);
-            extram_write_float(f_vals_addr + (N * (i - 1) + (j - 1)) * 4, f_source(x, y) / square_Np2);
+            float tmp = f_source(x, y) / square_Np2;
+            extram_write<float>(tmp, f_vals_addr + (N * (i - 1) + (j - 1)) * 4);
         }
     }
 
@@ -212,24 +215,24 @@ struct output solve_extram_buffered(int N, float (*f_source)(float, float), int 
     for (int k = 1; k <= maxit; k++) {
         // initialize phi_old
         for (int j = 1; j < N + 1; j++)
-            phi_old[j] = extram_read_float(phi_addr + j * 4);
+            phi_old[j] = extram_read<float>(phi_addr + j * 4);
         for (int j = 1; j < N; j++)
-            phi_old[(N + 1) + j] = extram_read_float(phi_addr + ((N + 2) + (j + 1)) * 4);
+            phi_old[(N + 1) + j] = extram_read<float>(phi_addr + ((N + 2) + (j + 1)) * 4);
 
         // update phi and calculate change
         float scp = 0.0;
         for (int i = 1; i < N + 1; i++) {
-            phi_old[0] = extram_read_float(phi_addr + ((N + 2) * i) * 4);
-            phi_old[(N + 1) + N] = extram_read_float(phi_addr + ((N + 2) * (i + 1) + (N + 1)) * 4);
+            phi_old[0] = extram_read<float>(phi_addr + ((N + 2) * i) * 4);
+            phi_old[(N + 1) + N] = extram_read<float>(phi_addr + ((N + 2) * (i + 1) + (N + 1)) * 4);
 
             for (int j = 1; j < N + 1; j++) {
                 // update phi
-                float phi_old_buf = extram_read_float(phi_addr + ((N + 2) * i + j) * 4);                                                                                                  // load middle
-                phi_old[(N + 1) + (j - 1)] = extram_read_float(phi_addr + ((N + 2) * (i + 1) + j) * 4);                                                                                   // load down for down and right later
-                float phi_new = 0.25 * (phi_old[(N + 1) + (j - 1)] + phi_old[j] + phi_old[(N + 1) + j] + phi_old[j - 1] - extram_read_float(f_vals_addr + (N * (i - 1) + (j - 1)) * 4));  // down top right left
+                float phi_old_buf = extram_read<float>(phi_addr + ((N + 2) * i + j) * 4);                                                                                                  // load middle
+                phi_old[(N + 1) + (j - 1)] = extram_read<float>(phi_addr + ((N + 2) * (i + 1) + j) * 4);                                                                                   // load down for down and right later
+                float phi_new = 0.25 * (phi_old[(N + 1) + (j - 1)] + phi_old[j] + phi_old[(N + 1) + j] + phi_old[j - 1] - extram_read<float>(f_vals_addr + (N * (i - 1) + (j - 1)) * 4));  // down top right left
 
-                extram_write_float(phi_addr + ((N + 2) * i + j) * 4, phi_new);  // save middle grid update
-                phi_old[j] = phi_old_buf;                                       // save middle for up and left later
+                extram_write<float>(phi_new, phi_addr + ((N + 2) * i + j) * 4);  // save middle grid update
+                phi_old[j] = phi_old_buf;                                        // save middle for up and left later
 
                 // calculate change
                 float diff = phi_new - phi_old_buf;

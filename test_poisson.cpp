@@ -4,8 +4,8 @@
 #include <stdlib.h>
 
 #include "lib_poisson.hpp"
-#include "lib_usart.hpp"
 #include "lib_time.hpp"
+#include "lib_usart.hpp"
 
 int main(void) {
     // initialize usart
@@ -33,6 +33,7 @@ int main(void) {
         serprint("PHI MEMORY ALLOCATION FAILED\n\r");
 
     // solve poisson equation
+    serprint("INTERNAL RAM\n\r");
     timer_reset();
     retval = solve(N, f_source, maxit, tol, phi);
     t = timer_getms();
@@ -41,7 +42,7 @@ int main(void) {
     serprint("\n\riter = ");
     serprintint(retval.iter);
     serprint("\n\rresidual = ");
-    serprintfloat(retval.residual, 0, 8);
+    serprintfloat(retval.residual, 0, 10);
     serprint("\n\relapsed time = ");
     serprintuint32(t);
     serprint(" ms\n\r");
@@ -51,6 +52,7 @@ int main(void) {
     uint16_t phi_addr = 0;
 
     // solve poisson equation
+    serprint("\n\rEXTERNAL RAM\n\r");
     timer_reset();
     retval = solve_extram(N, f_source, maxit, tol, phi_addr);
     t = timer_getms();
@@ -59,12 +61,13 @@ int main(void) {
     serprint("\n\riter = ");
     serprintint(retval.iter);
     serprint("\n\rresidual = ");
-    serprintfloat(retval.residual, 0, 8);
+    serprintfloat(retval.residual, 0, 10);
     serprint("\n\relapsed time = ");
     serprintuint32(t);
     serprint(" ms\n\r");
 
     // solve buffered poisson equation
+    serprint("\n\rEXTERNAL RAM HIGHLY BUFFERED\n\r");
     timer_reset();
     retval = solve_extram_buffered(N, f_source, maxit, tol, phi_addr);
     t = timer_getms();
@@ -73,7 +76,7 @@ int main(void) {
     serprint("\n\riter = ");
     serprintint(retval.iter);
     serprint("\n\rresidual = ");
-    serprintfloat(retval.residual, 0, 8);
+    serprintfloat(retval.residual, 0, 10);
     serprint("\n\relapsed time = ");
     serprintuint32(t);
     serprint(" ms\n\r");
