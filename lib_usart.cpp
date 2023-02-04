@@ -6,16 +6,19 @@ void usart_setup(void) {
 }
 
 void serprintchar(char c) {
+    // wait until USART is ready
     while ((UCSR0A & (1 << UDRE0)) == 0) {
     };
+
+    // send char
     UDR0 = c;
 }
 
-void serprint(char* s) {
+void serprint(const char* s) {
     int i = 0;
     while (1) {
         char c = s[i];
-        if (c == 0) break;
+        if (c == 0) break;  // end of string
         serprintchar(c);
         i++;
     }
@@ -83,15 +86,15 @@ void serprintuint32(uint32_t val) {
         serprintchar('0');
 }
 
-void serprintint(int i) {
+void serprintint(int val) {
     char s[16];
-    sprintf(s, "%d", i);
+    sprintf(s, "%d", val);
     serprint(s);
 }
 
-void serprinthex(int i) {
+void serprinthex(int val) {
     char s[16];
-    sprintf(s, "0x%x", i);
+    sprintf(s, "0x%x", val);
     serprint(s);
 }
 
@@ -127,12 +130,7 @@ uint8_t serscan(void) {
     return UDR0;
 }
 
-void wait_key(void) {
-    serprint("press any key to continue\n\r");
-    serscan();
-}
-
-void wait_key(char* message) {
+void wait_key(const char* message) {
     serprint(message);
     serscan();
 }
