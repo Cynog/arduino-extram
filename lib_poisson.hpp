@@ -7,7 +7,7 @@
 #include "lib_usart.hpp"
 
 /**
- * @brief contains a convergence flag, number of iterations, residual
+ * @brief Contains a convergence flag, number of iterations, residual
  *
  */
 struct output {
@@ -17,7 +17,7 @@ struct output {
 };
 
 /**
- * @brief source function for the 2d Poisson Equation
+ * @brief Source function for the 2d Poisson Equation
  *
  * @param x
  * @param y
