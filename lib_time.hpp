@@ -2,7 +2,6 @@
 
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include <stdio.h>
 
 /**
  * @brief Initialize Timer/Counter 0 for 1ms Compare Match A interrupts
