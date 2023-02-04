@@ -1,7 +1,4 @@
-#include <avr/io.h>
 #include <avr/pgmspace.h>
-#include <math.h>
-#include <util/delay.h>
 
 #include "lib_extram.hpp"
 #include "lib_sort.hpp"
