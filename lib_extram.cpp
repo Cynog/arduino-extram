@@ -2,7 +2,7 @@
 
 void extram_setup(void) {
     // shifting register pins
-    DDR_ADDR012 |= MASK_ADDR012;
+    DDR_ADDRLSB |= MASK_ADDRLSB;
     DDR_SRCLK |= MASK_SRCLK;
 
     // external ram pins

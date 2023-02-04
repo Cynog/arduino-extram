@@ -42,8 +42,8 @@ T extram_read(uint16_t addr, uint16_t ind = 0) {
     // read the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
         // least significant bits of address
-        PORT_ADDR012 &= ~MASK_ADDR012;
-        PORT_ADDR012 |= MASK_ADDR012 & (addr_extram + i);
+        PORT_ADDRLSB &= ~MASK_ADDRLSB;
+        PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
 
         // set OE to LOW
         PORT_OE &= ~MASK_OE;
@@ -88,8 +88,8 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
     // write the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
         // least significant bits of address
-        PORT_ADDR012 &= ~MASK_ADDR012;
-        PORT_ADDR012 |= MASK_ADDR012 & (addr_extram + i);
+        PORT_ADDRLSB &= ~MASK_ADDRLSB;
+        PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
 
         // set IO pins to output
         DDR_IO0 |= MASK_IO0;
