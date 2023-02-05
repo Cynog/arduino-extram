@@ -19,21 +19,28 @@ int main(void) {
     uint32_t t;
 
     // testing parameters
-    int N = 10;
-    int maxit = 1000;
+    uint8_t N = 10;
+    uint16_t maxit = 1000;
     float tol = 1e-6F;
 
     // return value
     struct output retval;
 
+    // print info
+    serprint("SOLVING POISSON EQUATION LAPLACE(phi) = f WITH DIRICHLET BOUNDARY CONDITION ON UNIT SQUARE\n\r");
+    serprint("number of intervals in each direction: ");
+    serprintuint8(N);
+    serprint("\n\r");
+
     ////////////////* INTERNAL RAM *////////////////
+    serprint("\n\rINTERNAL RAM\n\r");
+    
     // allocate phi
     float *phi = (float *)calloc((N + 2) * (N + 2), sizeof(float));
     if (phi == NULL)
         serprint("PHI MEMORY ALLOCATION FAILED\n\r");
 
     // solve poisson equation
-    serprint("INTERNAL RAM\n\r");
     timer_reset();
     retval = solve(N, f_source, maxit, tol, phi);
     t = timer_getms();
