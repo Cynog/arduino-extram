@@ -32,7 +32,7 @@ template <typename T>
 void sort_bubble_extram(uint16_t addr, uint16_t n) {
     for (uint16_t i = 0; i < n - 1; i++)
         for (uint16_t j = 0; j < n - i - 1; j++) {
-            // read values from EXTRAM
+            // read values from EXTRAM //TODO performance could be improved by comparing single bytes while reading (for uint data types)
             T curr = extram_read<T>(addr + j * sizeof(T));
             T next = extram_read<T>(addr + (j + 1) * sizeof(T));
             if (curr > next) {
