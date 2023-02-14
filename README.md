@@ -4,6 +4,38 @@ Implementation of a C library for an external RAM for the Arduino Uno.
 
 *further Description will follow*
 
+## Hardware Setup
+
+### Shifting Register
+| left          | right                                               |
+| ------------- | --------------------------------------------------- |
+| Q<sub>B</sub> | VCC                                                 |
+| Q<sub>C</sub> | Q<sub>A</sub>                                       |
+| Q<sub>D</sub> | SER                                                 |
+| Q<sub>E</sub> | <span style="text-decoration:overline">OE</span>    |
+| Q<sub>F</sub> | RCLK                                                |
+| Q<sub>G</sub> | SRCLK                                               |
+| Q<sub>H</sub> | <span style="text-decoration:overline">SRCLR</span> |
+| GND           | Q<sub>H</sub>'                                      |
+
+### SRAM
+| left            | right                                             |
+| --------------- | ------------------------------------------------- |
+| NC              | VCC                                               |
+| A<sub>12</sub>  | <span style="text-decoration:overline">WE</span>  |
+| A<sub>7</sub>   | CS2                                               |
+| A<sub>6</sub>   | A<sub>8</sub>                                     |
+| A<sub>5</sub>   | A<sub>9</sub>                                     |
+| A<sub>4</sub>   | A<sub>11</sub>                                    |
+| A<sub>3</sub>   | <span style="text-decoration:overline">G</span>   |
+| A<sub>2</sub>   | A<sub>10</sub>                                    |
+| A<sub>1</sub>   | <span style="text-decoration:overline">CS1</span> |
+| A<sub>0</sub>   | I/O<sub>8</sub>                                   |
+| I/O<sub>1</sub> | I/O<sub>7</sub>                                   |
+| I/O<sub>2</sub> | I/O<sub>6</sub>                                   |
+| I/O<sub>3</sub> | I/O<sub>5</sub>                                   |
+| GND             | I/O<sub>4</sub>                                   |
+
 ## Usage and Requirements
 
 ### Requirements
