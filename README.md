@@ -36,6 +36,8 @@ Implementation of a C library for an external RAM for the Arduino Uno.
 | I/O<sub>3</sub> | I/O<sub>5</sub>                                   |
 | GND             | I/O<sub>4</sub>                                   |
 
+![circuit layout](./assets/arduino-extram_circuit.svg)
+
 ## Usage and Requirements
 
 ### Requirements
