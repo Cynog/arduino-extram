@@ -1,42 +1,22 @@
-# arduino_extram
+# arduino-extram
 
-Implementation of a C library for an external RAM for the Arduino Uno.
-
-*further Description will follow*
+Implementation of a C++ library for an external RAM for the Arduino Uno. More specifically the **HM3-2064-5** external RAM was used together with two **74HC595** shifting registers. This external RAM accepts $8192$ addresses each pointing to a single Byte of storage. The basic structure is, that the address is sent serially to the shifting registers and then the Arduino can perform a read or write on the specific address. As acces times on RAM memory can have a big impact on performance, the project is focused on reducing the overhead of the external RAM.
 
 ## Hardware Setup
 
-### Shifting Register
-| left          | right                                               |
-| ------------- | --------------------------------------------------- |
-| Q<sub>B</sub> | VCC                                                 |
-| Q<sub>C</sub> | Q<sub>A</sub>                                       |
-| Q<sub>D</sub> | SER                                                 |
-| Q<sub>E</sub> | <span style="text-decoration:overline">OE</span>    |
-| Q<sub>F</sub> | RCLK                                                |
-| Q<sub>G</sub> | SRCLK                                               |
-| Q<sub>H</sub> | <span style="text-decoration:overline">SRCLR</span> |
-| GND           | Q<sub>H</sub>'                                      |
+<img src="./assets/74HC595_pinout.svg" width="220"/>
+<img src="./assets/HM3-2064-5_pinout.svg" width="305"/>
 
-### SRAM
-| left            | right                                             |
-| --------------- | ------------------------------------------------- |
-| NC              | VCC                                               |
-| A<sub>12</sub>  | <span style="text-decoration:overline">WE</span>  |
-| A<sub>7</sub>   | CS2                                               |
-| A<sub>6</sub>   | A<sub>8</sub>                                     |
-| A<sub>5</sub>   | A<sub>9</sub>                                     |
-| A<sub>4</sub>   | A<sub>11</sub>                                    |
-| A<sub>3</sub>   | <span style="text-decoration:overline">G</span>   |
-| A<sub>2</sub>   | A<sub>10</sub>                                    |
-| A<sub>1</sub>   | <span style="text-decoration:overline">CS1</span> |
-| A<sub>0</sub>   | I/O<sub>8</sub>                                   |
-| I/O<sub>1</sub> | I/O<sub>7</sub>                                   |
-| I/O<sub>2</sub> | I/O<sub>6</sub>                                   |
-| I/O<sub>3</sub> | I/O<sub>5</sub>                                   |
-| GND             | I/O<sub>4</sub>                                   |
+The following Circuit Diagram shows all connections used in the project. The color Code is the following:
+* **purple** wires are used for the $13$ address bits of the external ram where A0, A1 and A2 is connected directly to the Arduino with A2 using the same pin as for serial communication with the shifting register
+* **orange** wires are used for the $8$ I/O bits of the external ram connected directly to the arduino
+* **yellow**
+* **green**
+* **ochre**
+* **red**
+* **black**
 
-![circuit layout](./assets/arduino-extram_circuit.svg)
+<img src="./assets/arduino-extram_circuit.svg"/>
 
 ## Usage and Requirements
 
@@ -64,3 +44,33 @@ The program ```test_timer.cpp``` tries to find the overhead caused by the time m
 | $199$  | $0.1$ ms  | $103963.6$ ms          | $3.96\%$ |
 
 One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler option which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$ which we usually will not even notice as our timer is only counting full milliseconds.
+
+## Structure
+
+### Libraries
+
+#### lib_extram
+
+#### lib_poisson
+
+#### lib_sort
+
+#### lib_time
+
+#### lib_usart
+
+
+
+### Tests
+
+#### test_perf_fill
+
+#### test_perf
+
+#### test_poisson
+
+#### test_sort_uint8
+
+#### test_sort_uint16
+
+#### test_time
