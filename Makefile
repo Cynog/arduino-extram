@@ -49,5 +49,5 @@ cu:
 
 # clean
 clean:
-	rm -rf */**/*.hex
-	rm -rf */**/*.bin
+	rm -rf *.hex
+	rm -rf *.bin
