@@ -52,6 +52,37 @@ int main(void) {
     serprintuint32(t);
     serprint(" ms\n\r");
 
+    ////////////////* INTERNAL RAM CHUNKS*////////////////
+    serprint("\n\r\n\rINTERNAL RAM CHUNKS\n\r");
+
+    // initialize list for sorting
+    for (uint16_t i = 0; i < n; i++) {
+        list[i] = pgm_read_word(LIST + i);
+    }
+
+    // sort
+    uint16_t list_sorted[n];
+    uint8_t n_chunks = 16;
+    timer_reset();
+    sort_bubble_chunks<uint16_t>(list, n, n_chunks, list_sorted);
+    t = timer_getms();
+
+    // print sorted list
+    serprint("sorted list:\n\r");
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint16(list_sorted[i]);
+        serprint("   ");
+
+        if ((i + 1) % 16 == 0)
+            serprint("\n\r");
+    }
+    serprint("\n\r");
+
+    // print time
+    serprint("elapsed time: ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
     ////////////////* EXTERNAL RAM *////////////////
     serprint("\n\r\n\rEXTERNAL RAM\n\r");
 
@@ -83,8 +114,8 @@ int main(void) {
     serprintuint32(t);
     serprint(" ms\n\r");
 
-    ////////////////* EXTERNAL RAM BUFFERED *////////////////
-    serprint("\n\r\n\rEXTERNAL RAM BUFFERED\n\r");
+    ////////////////* EXTERNAL RAM EXTERNAL CHUNKS *////////////////
+    serprint("\n\r\n\rEXTERNAL RAM EXTERNAL CHUNKS\n\r");
 
     // initialize list for sorting
     for (uint16_t i = 0; i < n; i++) {
@@ -93,10 +124,39 @@ int main(void) {
     }
 
     // sort
-    uint8_t chunksize = 16;
     uint16_t addr_sorted = addr + n * sizeof(uint16_t);
     timer_reset();
-    sort_bubble_extram_chunks<uint16_t>(addr, n, chunksize, addr_sorted);
+    sort_bubble_extram_chunks<uint16_t>(addr, n, n_chunks, addr_sorted, false);
+    t = timer_getms();
+
+    // print sorted list
+    serprint("sorted list:\n\r");
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint16(extram_read<uint16_t>(addr_sorted, i));
+        serprint("   ");
+
+        if ((i + 1) % 16 == 0)
+            serprint("\n\r");
+    }
+    serprint("\n\r");
+
+    // print time
+    serprint("elapsed time: ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
+    ////////////////* EXTERNAL RAM INTERNAL CHUNKS *////////////////
+    serprint("\n\r\n\rEXTERNAL RAM INTERNAL CHUNKS\n\r");
+
+    // initialize list for sorting
+    for (uint16_t i = 0; i < n; i++) {
+        uint16_t tmp = pgm_read_word(LIST + i);
+        extram_write<uint16_t>(tmp, addr, i);
+    }
+
+    // sort
+    timer_reset();
+    sort_bubble_extram_chunks<uint16_t>(addr, n, n_chunks, addr_sorted);
     t = timer_getms();
 
     // print sorted list
