@@ -3,6 +3,7 @@
 #include <math.h>
 
 #include "lib_extram.hpp"
+#include "lib_usart.hpp"
 
 /**
  * @brief Bubble-sort a list of datatype T and length n in internal ram
@@ -45,13 +46,29 @@ void sort_bubble_extram(uint16_t addr, uint16_t n) {
         }
 }
 
+/**
+ * @brief Bubble-sort a list of datatype T and length n in external RAM by sorting chunks in the faster internal RAM and later merging the sorted chunks back on the external RAM at addr_sorted.
+ *
+ * @tparam T data type of list entries
+ * @param addr lists starting address in EXTRAM
+ * @param n length of list
+ * @param n_chunks number of chunks to use for buffering on internal RAM (has to divide n)
+ * @param addr_sorted address where the sorted list is saved
+ */
 template <typename T>
 void sort_bubble_extram_chunks(uint16_t addr, uint16_t n, uint8_t n_chunks, uint16_t addr_sorted) {
+    // check input
+    if (n % n_chunks != 0) {
+        serprint("BUFFERED SORTING FAILED! n_chunks has to divide n!\n\r");
+        return;
+    }
+
+    // addresses of each chunk
     uint16_t chunksize = n / n_chunks;
     uint16_t chunk_addrs[n_chunks];
     chunk_addrs[0] = addr;
-    for (uint8_t i = 1; i < n_chunks; i++)
-        chunk_addrs[i] = addr + i * chunksize * sizeof(T);
+    for (uint8_t k = 1; k < n_chunks; k++)
+        chunk_addrs[k] = addr + k * chunksize * sizeof(T);
 
     // sort chunks buffered on internal ram
     T list[chunksize];
@@ -68,34 +85,44 @@ void sort_bubble_extram_chunks(uint16_t addr, uint16_t n, uint8_t n_chunks, uint
             extram_write<T>(list[i], chunk_addrs[k] + i * sizeof(T));
     }
 
-    // merge sorted chunks
+    // next smallest element of each chunk for merging
     T currvals[n_chunks];
-    for (uint8_t i = 0; i < n_chunks; i++)
-        currvals[i] = extram_read<T>(chunk_addrs[i]);
+    for (uint8_t k = 0; k < n_chunks; k++)
+        currvals[k] = extram_read<T>(chunk_addrs[k]);
 
-    uint16_t chunkinds[n_chunks];
-    for (uint8_t i = 0; i < n_chunks; i++)
-        chunkinds[i] = 0;
+    // index of the next smallest element of each chunk for merging
+    uint16_t chunk_inds[n_chunks];
+    for (uint8_t k = 0; k < n_chunks; k++)
+        chunk_inds[k] = 0;
 
+    // merge sorted chunks
     for (uint16_t i = 0; i < n; i++) {
         // search smallest current element of each chunk
         uint8_t indmin = 0;
         T valmin = currvals[0];
-        for (uint8_t i = 1; i < n_chunks; i++) {
-            if (currvals[i] < valmin) {
-                indmin = i;
-                valmin = currvals[i];
+        for (uint8_t k = 1; k < n_chunks; k++) {
+            if (currvals[k] < valmin) {
+                indmin = k;
+                valmin = currvals[k];
             }
         }
 
-        // put into sorted list
+        // insert in final list
         extram_write<T>(valmin, addr_sorted + i * sizeof(T));
 
-        // load next element
-        chunkinds[indmin] += 1;
-        if (chunkinds[indmin] == chunksize)
-            currvals[indmin] = INFINITY;
-        else
-            currvals[indmin] = extram_read<T>(chunk_addrs[indmin] + chunkinds[indmin] * sizeof(T));
+        // check chunk completely inserted in final list thus no longer needed
+        chunk_inds[indmin] += 1;
+        if (chunk_inds[indmin] == chunksize) {
+            for (uint8_t k = indmin; k < n_chunks; k++) {
+                currvals[k] = currvals[k + 1];
+                chunk_inds[k] = chunk_inds[k + 1];
+                chunk_addrs[k] = chunk_addrs[k + 1];
+            }
+            n_chunks -= 1;
+            continue;
+        }
+
+        // load next element of the chunk
+        currvals[indmin] = extram_read<T>(chunk_addrs[indmin] + chunk_inds[indmin] * sizeof(T));
     }
 }
