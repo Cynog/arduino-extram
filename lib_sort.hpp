@@ -1,3 +1,10 @@
+/**
+ * @file lib_sort.hpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Bubble Sort algorithm on internal and external RAM for comparison.
+ *  
+ */
+
 #pragma once
 
 #include <math.h>

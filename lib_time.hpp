@@ -1,3 +1,10 @@
+/**
+ * @file lib_time.hpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Simple library to measure time in milliseconds.
+ * 
+ */
+
 #pragma once
 
 #include <avr/interrupt.h>

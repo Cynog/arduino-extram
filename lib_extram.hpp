@@ -1,3 +1,10 @@
+/**
+ * @file lib_extram.hpp
+ * @author Cynog (github.com/Cynog)
+ * @brief External SRAM library for Arduino UNO.
+ *
+ */
+
 #pragma once
 
 #include <avr/io.h>

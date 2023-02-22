@@ -1,3 +1,10 @@
+/**
+ * @file lib_poisson.hpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Jacobi-solvers of the 2d Poisson Equation on internal and external RAM for comparison. 
+ * 
+ */
+
 #pragma once
 
 #include <math.h>

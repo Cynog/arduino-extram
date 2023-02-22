@@ -1,7 +1,7 @@
 /**
  * @file config.hpp
  * @author Cynog (github.com/Cynog)
- * @brief Configuration file for constants and IO-registers for the EXTRAM library for Arduino UNO.
+ * @brief Configuration file for constants and IO-registers for the EXTRAM library for Arduino Uno.
  *
  */
 

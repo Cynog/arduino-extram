@@ -1,3 +1,10 @@
+/**
+ * @file lib_usart.hpp
+ * @author Cynog (github.com/Cynog)
+ * @brief A library containing some useful usart functions.
+ * 
+ */
+
 #pragma once
 
 #include <avr/io.h>
