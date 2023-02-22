@@ -83,6 +83,37 @@ int main(void) {
     serprintuint32(t);
     serprint(" ms\n\r");
 
+    ////////////////* EXTERNAL RAM BUFFERED *////////////////
+    serprint("\n\r\n\rEXTERNAL RAM BUFFERED\n\r");
+
+    // initialize list for sorting
+    for (uint16_t i = 0; i < n; i++) {
+        uint16_t tmp = pgm_read_word(LIST + i);
+        extram_write<uint16_t>(tmp, addr, i);
+    }
+
+    // sort
+    uint8_t chunksize = 16;
+    timer_reset();
+    sort_bubble_extram_chunks<uint16_t>(addr, n, chunksize);
+    t = timer_getms();
+
+    // print sorted list
+    serprint("sorted list:\n\r");
+    for (uint16_t i = 0; i < n; i++) {
+        serprintuint16(extram_read<uint16_t>(addr, i));
+        serprint("   ");
+
+        if ((i + 1) % 16 == 0)
+            serprint("\n\r");
+    }
+    serprint("\n\r");
+
+    // print time
+    serprint("elapsed time: ");
+    serprintuint32(t);
+    serprint(" ms\n\r");
+
     // endless loop
     while (1) {
     };
