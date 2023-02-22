@@ -1,5 +1,7 @@
 #pragma once
 
+#include <math.h>
+
 #include "lib_extram.hpp"
 
 /**
@@ -44,7 +46,7 @@ void sort_bubble_extram(uint16_t addr, uint16_t n) {
 }
 
 template <typename T>
-void sort_bubble_extram_chunks(uint16_t addr, uint16_t n, uint8_t n_chunks) {
+void sort_bubble_extram_chunks(uint16_t addr, uint16_t n, uint8_t n_chunks, uint16_t addr_sorted) {
     uint16_t chunksize = n / n_chunks;
     uint16_t chunk_addrs[n_chunks];
     chunk_addrs[0] = addr;
@@ -64,5 +66,36 @@ void sort_bubble_extram_chunks(uint16_t addr, uint16_t n, uint8_t n_chunks) {
         // save sorted chunk on external ram
         for (uint8_t i = 0; i < chunksize; i++)
             extram_write<T>(list[i], chunk_addrs[k] + i * sizeof(T));
+    }
+
+    // merge sorted chunks
+    T currvals[n_chunks];
+    for (uint8_t i = 0; i < n_chunks; i++)
+        currvals[i] = extram_read<T>(chunk_addrs[i]);
+
+    uint16_t chunkinds[n_chunks];
+    for (uint8_t i = 0; i < n_chunks; i++)
+        chunkinds[i] = 0;
+
+    for (uint16_t i = 0; i < n; i++) {
+        // search smallest current element of each chunk
+        uint8_t indmin = 0;
+        T valmin = currvals[0];
+        for (uint8_t i = 1; i < n_chunks; i++) {
+            if (currvals[i] < valmin) {
+                indmin = i;
+                valmin = currvals[i];
+            }
+        }
+
+        // put into sorted list
+        extram_write<T>(valmin, addr_sorted + i * sizeof(T));
+
+        // load next element
+        chunkinds[indmin] += 1;
+        if (chunkinds[indmin] == chunksize)
+            currvals[indmin] = INFINITY;
+        else
+            currvals[indmin] = extram_read<T>(chunk_addrs[indmin] + chunkinds[indmin] * sizeof(T));
     }
 }

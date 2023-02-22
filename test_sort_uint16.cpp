@@ -94,14 +94,15 @@ int main(void) {
 
     // sort
     uint8_t chunksize = 16;
+    uint16_t addr_sorted = addr + n * sizeof(uint16_t);
     timer_reset();
-    sort_bubble_extram_chunks<uint16_t>(addr, n, chunksize);
+    sort_bubble_extram_chunks<uint16_t>(addr, n, chunksize, addr_sorted);
     t = timer_getms();
 
     // print sorted list
     serprint("sorted list:\n\r");
     for (uint16_t i = 0; i < n; i++) {
-        serprintuint16(extram_read<uint16_t>(addr, i));
+        serprintuint16(extram_read<uint16_t>(addr_sorted, i));
         serprint("   ");
 
         if ((i + 1) % 16 == 0)
