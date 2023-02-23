@@ -283,8 +283,8 @@ One could set ```OCR1A``` a little bit lower to compensate the overhead, but thi
 
 ## 4. Resources
 
-[Datasheet **HM3-2064-5**](https://www.datasheetarchive.com/pdf/download.php?id=a5026d50578d71a1c896b4f3ad4d3b9ebe7fe6&type=O&term=HM3-2064U-5)
-[Datasheet **74HC595**](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjw4KHUqaz9AhUXQfEDHaV8AxgQFnoECBAQAQ&url=https%3A%2F%2Fwww.ti.com%2Flit%2Fpdf%2Fscls041&usg=AOvVaw3xTg3mGuz-5PPZmidRxmCT)
-[Bubblesort](https://de.wikipedia.org/wiki/Bubblesort)
-[Discrete Poisson Equation](https://en.wikipedia.org/wiki/Discrete_Poisson_equation)
+[Datasheet **HM3-2064-5**](https://www.datasheetarchive.com/pdf/download.php?id=a5026d50578d71a1c896b4f3ad4d3b9ebe7fe6&type=O&term=HM3-2064U-5)\
+[Datasheet **74HC595**](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjw4KHUqaz9AhUXQfEDHaV8AxgQFnoECBAQAQ&url=https%3A%2F%2Fwww.ti.com%2Flit%2Fpdf%2Fscls041&usg=AOvVaw3xTg3mGuz-5PPZmidRxmCT)\
+[Bubblesort](https://de.wikipedia.org/wiki/Bubblesort)\
+[Discrete Poisson Equation](https://en.wikipedia.org/wiki/Discrete_Poisson_equation)\
 [Jacobi-solver](https://en.wikipedia.org/wiki/Jacobi_method)
