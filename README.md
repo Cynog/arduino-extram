@@ -3,6 +3,10 @@
 This repository features a C++ library for an external SRAM for the Arduino Uno. More specifically the **HM3-2064-5** external RAM was used together with two **74HC595** shifting registers. This external RAM accepts $8192$ addresses each pointing to a single byte. The basic structure is, that the $13$-bit address is sent serially to the shifting registers and then the Arduino can perform a read or write on the specific address.\
 As RAM access times are crucial for performance, the project is focused on reducing the overhead of the external RAM and shows the idea of using the faster internal RAM as a buffer - analog to how caching works on modern CPUs.
 
+
+
+
+
 ## 1 Hardware Setup
 The pinout of the external SRAM **GM3-2064-5** can be seen in the graphic below. A<sub>0</sub> : A<sub>13</sub> are the pins for the $13$-bit address. I/O<sub>1</sub> : I/O<sub>8</sub> are I/O pins for the $8$ bit of the single byte at each specific address. For read and write operations, this library just uses the output enable pin <span style="text-decoration:overline">OE</span> and the write enable pin <span style="text-decoration:overline">WE</span>. Both chip select pins CS<sub>1</sub> and CS<sub>2</sub> are fixed and thus not controlled by the Arduino. Further information can be found in the corresponding datasheet.
 
@@ -29,6 +33,10 @@ The following Circuit Diagram shows all connections between these components and
 <img src="./assets/arduino-extram_circuit.svg"/>
 </p>
 
+
+
+
+
 ## 2 Running the Project
 
 ### 2.1 Requirements
@@ -48,13 +56,12 @@ make test screen
 ```
 
 
+
+
+
 ## 3 Implementation
 
-There are several libraries in the project. The main library for communication with the external SRAM is ```lib_extram```. ```lib_usart``` ```lib_time``` ```lib_sort``` ```lib_poisson```
-
-### 3.1 Libraries
-
-#### lib_extram
+### 3.1 lib_extram
 
 This is the core part of the repository. This library carries out the read and write access of the external RAM. The pinout and other useful definitions are defined in ```config.hpp```. Then we will take a closer look at the librarys functions in more detail.
 
@@ -162,53 +169,6 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
 }
 ```
 
-#### lib_sort
-
-This is a library for benchmarking with bubble sort implemented on internal and external RAM. There is also a chunked bubble sort algorithm implemented on the internal RAM and on the external RAM. For the cunked version on external RAM, one can specify if the chunks are buffered on internal RAM for sorting.
-
-#### lib_poisson
-
-This is another library for benchmarking with a Jacobi-solver for the 2d-Poisson equation with dirichlet boundary conditions on the unit square $\Omega = [0, 1]^2$.
-
-$$
--\Delta \phi = f \text{ with respect to } \phi = 0 \text{ on } \delta \Omega
-$$
-
-The according Jacobi grid update can be written as
-
-$$
-\phi^\text{new}_{i,j} = \frac{1}{4} \left(\phi^\text{old}_{i+1,j} + \phi^\text{old}_{i-1,j} + \phi^\text{old}_{i,j+1} + \phi^\text{old}_{i,j-1} - f_{i,j}\right)\text{.}
-$$
-
-Typically $\phi^\text{new}$ and $\phi^\text{old}$ are both allocated in storage, but because of the very limited RAM space of the Arduino, I have only one $\phi$ in storage and I am buffering the entries of phi that have been overwritten until they are used again as left and top neighbours for the grid update.\
-This approach has the effect of reducing the number of external RAM accesses required in the function ```solve_extram()```, because this buffer is stored on internal RAM. Then i implemented another function ```solve_extram_buffered()``` to reduce the number of accesses on the external RAM even further.
-
-
-#### lib_usart
-
-This is a helper libary for serial printing using the usart. One could also use the library from the Arduino IDE. After calling the ```usart_setup()``` function once, one can use all implemented serial print funcions for the specific data types.
-
-#### lib_timer
-
-This is a helper library to measure the time in ms using the Timer/Counter 0. One could also use ```millis()``` command from Arduino IDE. The following code shows the basic usage.
-
-```C++
-// setup millisecond timer
-timer_setup(); // only one call required
-uint32_t t;
-
-// measure and print time
-timer_reset();
-// CODE TO BE MEASURED HERE
-t = timer_getms();
-serprintuint32(t);
-serprint(" ms\n\r");
-```
-
-
-
-### 3.2 Tests
-
 #### test
 
 This is a simple test which checks the functionality of the external RAM. It should be run after connecting the hardware to make sure that everything is fine. For a few different data types it writes a vector to addresses spread randomly over the whole external SRAM and tells the user if there are any errors when reading the data again.
@@ -235,16 +195,9 @@ In this test the whole external RAM is filled with a different data type and ban
 | uint32_t <br>float | $4$ byte | $33$ ms    | $248242$ byte/s | $31$ ms   | $264258$ byte/s |
 | uint64_t           | $8$ byte | $24$ ms    | $341333$ byte/s | $22$ ms   | $372364$ byte/s |
 
-#### test_poisson
+### 3.2 lib_sort
 
-This program solved the Poisson equation with float precision for the three different methods.
-
-| method                   | time      |
-| ------------------------ | --------- |
-| internal                 | $1587$ ms |
-| external                 | $4541$ ms |
-| external buffered        | $3423$ ms |
-| external double buffered | $3169$ ms |
+This is a library for benchmarking with bubble sort implemented on internal and external RAM. There is also a chunked bubble sort algorithm implemented on the internal RAM and on the external RAM. For the cunked version on external RAM, one can specify if the chunks are buffered on internal RAM for sorting.
 
 #### test_sort_uint8
 
@@ -263,6 +216,56 @@ This program solved the Poisson equation with float precision for the three diff
 | external external chunked | $74$ ms   |
 | external internal chunked | $18$ ms   |
 
+### 3.3 lib_poisson
+
+This is another library for benchmarking with a Jacobi-solver for the 2d-Poisson equation with dirichlet boundary conditions on the unit square $\Omega = [0, 1]^2$.
+
+$$
+-\Delta \phi = f \text{ with respect to } \phi = 0 \text{ on } \delta \Omega
+$$
+
+The according Jacobi grid update can be written as
+
+$$
+\phi^\text{new}_{i,j} = \frac{1}{4} \left(\phi^\text{old}_{i+1,j} + \phi^\text{old}_{i-1,j} + \phi^\text{old}_{i,j+1} + \phi^\text{old}_{i,j-1} - f_{i,j}\right)\text{.}
+$$
+
+Typically $\phi^\text{new}$ and $\phi^\text{old}$ are both allocated in storage, but because of the very limited RAM space of the Arduino, I have only one $\phi$ in storage and I am buffering the entries of phi that have been overwritten until they are used again as left and top neighbours for the grid update.\
+This approach has the effect of reducing the number of external RAM accesses required in the function ```solve_extram()```, because this buffer is stored on internal RAM. Then i implemented another function ```solve_extram_buffered()``` to reduce the number of accesses on the external RAM even further.
+
+#### test_poisson
+
+This program solved the Poisson equation with float precision for the three different methods.
+
+| method                   | time      |
+| ------------------------ | --------- |
+| internal                 | $1587$ ms |
+| external                 | $4541$ ms |
+| external buffered        | $3423$ ms |
+| external double buffered | $3169$ ms |
+
+
+### 3.4 lib_usart
+
+This is a helper libary for serial printing using the usart. One could also use the library from the Arduino IDE. After calling the ```usart_setup()``` function once, one can use all implemented serial print funcions for the specific data types.
+
+### 3.5 lib_timer
+
+This is a helper library to measure the time in ms using the Timer/Counter 0. One could also use ```millis()``` command from Arduino IDE. The following code shows the basic usage.
+
+```C++
+// setup millisecond timer
+timer_setup(); // only one call required
+uint32_t t;
+
+// measure and print time
+timer_reset();
+// CODE TO BE MEASURED HERE
+t = timer_getms();
+serprintuint32(t);
+serprint(" ms\n\r");
+```
+
 #### test_timer to estimate timer overhead
 
 The program ```test_timer.cpp``` tries to find the overhead caused by the time measurement implemented in ```lib_time```. If one plugs in $100$ s in the ```_delay_ms()``` function from ```util/delay.h```, then we measure the following times with the ```lib_time``` library for counting milliseconds and decimilliseconds respectively.
@@ -272,4 +275,16 @@ The program ```test_timer.cpp``` tries to find the overhead caused by the time m
 | $1999$ | $1$ ms    | $100382$ ms            | $0.38\%$ |
 | $199$  | $0.1$ ms  | $103963.6$ ms          | $3.96\%$ |
 
-One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler option which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$ which we usually will not even notice as our timer is only counting full milliseconds.
+One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler option which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$ which we usually will not even notice as our timer is only counting full milliseconds. Additionally the timer overhead should be linear, which makes all measured times easily comparable.
+
+
+
+
+
+## 4. Resources
+
+[Datasheet **HM3-2064-5**](https://www.datasheetarchive.com/pdf/download.php?id=a5026d50578d71a1c896b4f3ad4d3b9ebe7fe6&type=O&term=HM3-2064U-5)
+[Datasheet **74HC595**](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjw4KHUqaz9AhUXQfEDHaV8AxgQFnoECBAQAQ&url=https%3A%2F%2Fwww.ti.com%2Flit%2Fpdf%2Fscls041&usg=AOvVaw3xTg3mGuz-5PPZmidRxmCT)
+[Bubblesort](https://de.wikipedia.org/wiki/Bubblesort)
+[Discrete Poisson Equation](https://en.wikipedia.org/wiki/Discrete_Poisson_equation)
+[Jacobi-solver](https://en.wikipedia.org/wiki/Jacobi_method)
