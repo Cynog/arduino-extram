@@ -1,27 +1,27 @@
 # External SRAM C++ Library for Arduino
 
-This repository features an implementation of a C++ library for an external SRAM for the Arduino Uno. More specifically the **HM3-2064-5** external RAM was used together with two **74HC595** shifting registers. This external RAM accepts $8192$ addresses each pointing to a single byte. The basic structure is, that the $13$-bit address is sent serially to the shifting registers and then the Arduino can perform a read or write on the specific address.\
-As acces times on RAM memory are crucial for performance, the project is focused on reducing the overhead of the external RAM and shows the idea of buffering in the faster internal RAM - analog to how caching works on modern CPUs.
+This repository features a C++ library for an external SRAM for the Arduino Uno. More specifically the **HM3-2064-5** external RAM was used together with two **74HC595** shifting registers. This external RAM accepts $8192$ addresses each pointing to a single byte. The basic structure is, that the $13$-bit address is sent serially to the shifting registers and then the Arduino can perform a read or write on the specific address.\
+As RAM access times are crucial for performance, the project is focused on reducing the overhead of the external RAM and shows the idea of using the faster internal RAM as a buffer - analog to how caching works on modern CPUs.
 
 ## 1 Hardware Setup
-The pinout of the external SRAM **GM3-2064-5** can be seen in the graphic below. $A_0:A_{13}$ are the pins for the $13$-bit address. $I/O_1 : I/O_8$ are I/O pins for the $8$ bit of the single byte at each specific address. For read and write operations, this library just uses the output enable pin $\overline{OE}$ and the write enable pin $\overline{WE}$. Both chip select pins $CS_1$ and $CS_2$ are fixed and thus not controlled by the Arduino. Further information can be found in the corresponding datasheet.
+The pinout of the external SRAM **GM3-2064-5** can be seen in the graphic below. A<sub>0</sub> : A<sub>13</sub> are the pins for the $13$-bit address. I/O<sub>1</sub> : I/O<sub>8</sub> are I/O pins for the $8$ bit of the single byte at each specific address. For read and write operations, this library just uses the output enable pin <span style="text-decoration:overline">OE</span> and the write enable pin <span style="text-decoration:overline">WE</span>. Both chip select pins CS<sub>1</sub> and CS<sub>2</sub> are fixed and thus not controlled by the Arduino. Further information can be found in the corresponding datasheet.
 
 <p align="center">
-<img src="./assets/HM3-2064-5_pinout.svg" width="305"/>
+<img src="./assets/HM3-2064-5_pinout.png" width="305"/>
 </p>
 
-As the Arduino has only $20$ I/O pins, we are using shifting registers to receive the $13$-bit address serially. This is done by connecting two $8$-bit serial input parallel output **74HC595** shifting registers together, where the corresponding output pins of each register are connected to $A_0 : A_{12}$. The output enable $\overline{OE}$ is fixed to be active. The $SER$ pin is used for serial input at each rising edge of $SRCLK$. Further information can again be found in the datasheet.
+As the Arduino has only $20$ I/O pins, shifting registers are used to receive the $13$-bit address serially. This is done by connecting two $8$-bit serial input parallel output **74HC595** shifting registers together, where the corresponding output pins of each register are connected to A<sub>0</sub> : A<sub>12</sub>. The output enable <span style="text-decoration:overline">OE</span> is fixed to be active. The SER pin is used for serial input at each rising edge of SRCLK. Further information can again be found in the datasheet.
 
 <p align="center">
-<img src="./assets/74HC595_pinout.svg" width="220"/>
+<img src="./assets/74HC595_pinout.png" width="220"/>
 </p>
 
 The following Circuit Diagram shows all connections between these components and the Arduino. The following color code is used:
-* **purple** wires are used for the $13$ address bits of the external ram where A0, A1 and A2 is connected directly to the Arduino with A2 using the same pin as for serial communication with the shifting register. This setup allows for better performance when not just writing single bytes(e.g. floats with $4$ bytes each), which will be explained in more detail later.
+* **purple** wires are used for the $13$ address bits of the external ram where A<sub>0</sub>, A<sub>1</sub> and A<sub>2</sub> is connected directly to the Arduino with A<sub>2</sub> using the same pin as for serial communication with the shifting register. This setup allows for better performance when not just writing single bytes(e.g. floats with $4$ bytes each), which will be explained in more detail later.
 * **green** is used for the serial output of the arduino and the daisy chain serial wire between both shifting registers
 * **ochre** is the clock signal for the serial input of the shifting registers
-* **orange** wires are used for the $8$ I/O bits of the external ram connected directly to the arduino to enable a parallel read and write if the address is set
-* **yellow** are the read enable and write enable pins to initialize read or write operations on the specific address
+* **orange** wires are used for the $8$ I/O bits of the external ram connected directly to the Arduino to enable a parallel read and write after the address is set
+* **yellow** are the read enable and write enable pins to initialize read or write operations at the specific address
 * **black** GND
 * **red** $5$V
 
@@ -33,7 +33,7 @@ The following Circuit Diagram shows all connections between these components and
 
 ### 2.1 Requirements
 
-For Linux users there is a Makefile for compiling, flashing and connecting to serial port using ```screen``` or ```cu```. This makefile should also work for Mac users. Windows users could use an IDE like Microchip Studio. For the Makefile one needs the following packages, which are all available via the package managers like apt:
+For Linux users there is a Makefile for compiling, flashing and connecting to serial port using ```screen``` or ```cu```. This makefile should also work for Mac users. Windows users could use an IDE like Microchip Studio. For the Makefile one needs the following packages, which are all available via the package managers like apt.
 * ```make```
 * ```avr-libc``` (libraries)
 * ```gcc-avr``` (compiling)
@@ -42,8 +42,8 @@ For Linux users there is a Makefile for compiling, flashing and connecting to se
 
 ### 2.2 Usage of the Makefile
 
-The Makefile automatically finds a connected Arduino. Calling just ```make``` without any further recipies will show you all possible main programs to flash on the Arduino together with two recipies to connect to the serial port via screen or cu. As an example, to compile and flash the basic test program and to connect to the serial port, one can use the following command.
-```
+The Makefile automatically finds a connected Arduino. Calling just ```make``` without any further recipies will show you all possible main programs to flash on the Arduino together with two recipies to connect to the serial port via screen or cu. As an example, to compile and flash the basic test program and to connect to the serial port using screen, one can use the following command.
+``` bash
 make test screen
 ```
 
@@ -79,7 +79,7 @@ void send_addr_to_sr(uint16_t addr) {
 
 The funcion ```extram_read()``` and the function ```extram write()``` carry out the read and write operations on the external SRAM. They are implemented using templates, which makes it easy to store and access different data types on the external SRAM.\
 As the external SRAM is organized in bytes, we have to read/write in bytes. If the considered data type has more than one byte, we will store it contiguous on the external SRAM. This is done using a reinterpret cast of the data pointer to ```uint8_t```. At this point it is important, that $A_0 : A_2$ is connected directly to the Arduino. Because of this it suffices to call the costly ```send_addr_to_sr()``` function only once to jump to the right position on the external SRAM, but the contiguous single bytes that we want to access there can be switched using $A_0:A_2$. This increases performance significantly for larger data types, as we will later see in the benchmarks, with the only requirement, that the address has to be a multiple of the size of the data type.\
-To control read/write functionaliy of the external SRAM, the arduino changes the state of the output enable $\overline{OE}$ and write enable $\overline{WE}$ accordingly.
+To control read/write functionaliy of the external SRAM, the arduino changes the state of the output enable <span style="text-decoration:overline">OE</span> and write enable <span style="text-decoration:overline">WE</span> accordingly.
 
 ```C++
 template <typename T>
