@@ -12,6 +12,7 @@
 #include <stdlib.h>
 
 #include "lib_extram.hpp"
+#include "lib_time.hpp"
 
 /**
  * @brief Initialize USART with baud rate 3600 in transmit and receive mode
@@ -105,4 +106,12 @@ uint8_t serscan(void);
  *
  * @param message message to show
  */
-void wait_key(const char *message = "press any key to continue\n\r");
+void wait_key(const char *message);
+
+/**
+ * @brief Wait for user input within a certain timeout. Requires timer_setup() to be called before and modifies the current timer!
+ * 
+ * @param message message to show
+ * @param remindms timeout to show message again
+ */
+void wait_key_remind(const char *message, uint32_t remindms);

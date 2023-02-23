@@ -211,6 +211,8 @@ serprint(" ms\n\r");
 
 #### test
 
+This is a simple test which checks the functionality of the external RAM. It should be run after connecting the hardware to make sure that everything is fine. For a few different data types it writes a vector to addresses spread randomly over the whole external SRAM and tells the user if there are any errors when reading the data again.
+
 #### test_perf
 
 #### test_perf_fill

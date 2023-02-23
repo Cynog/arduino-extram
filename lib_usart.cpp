@@ -134,3 +134,19 @@ void wait_key(const char* message) {
     serprint(message);
     serscan();
 }
+
+void wait_key_remind(const char* message, uint32_t remindms) {
+    timer_reset();
+    serprint(message);
+    while (1) {
+        if ((UCSR0A & (1 << RXC0)) != 0) {
+            serscan();
+            break;
+        }
+
+        if (timer_getms() >= remindms) {
+            serprint(message);
+            timer_reset();
+        }
+    }
+}

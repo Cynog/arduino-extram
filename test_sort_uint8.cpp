@@ -22,68 +22,72 @@ int main(void) {
     // number of values
     uint16_t n = 256;
 
-    ////////////////* INTERNAL RAM *////////////////
-    serprint("INTERNAL RAM\n\r");
-
-    // initialize list for sorting
-    uint8_t list[n];
-    for (uint16_t i = 0; i < n; i++) {
-        list[i] = pgm_read_word(LIST + i);
-    }
-
-    // sort
-    timer_reset();
-    sort_bubble<uint8_t>(list, n);
-    t = timer_getms();
-
-    // print sorted list
-    serprint("sorted list:\n\r");
-    for (uint16_t i = 0; i < n; i++) {
-        serprintuint8(list[i]);
-        serprint("   ");
-
-        if ((i + 1) % 16 == 0)
-            serprint("\n\r");
-    }
-    serprint("\n\r");
-
-    // print time
-    serprint("elapsed time: ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
-
-    ////////////////* EXTERNAL RAM *////////////////
-    serprint("\n\r\n\rEXTERNAL RAM\n\r");
-
-    // initialize list for sorting
-    uint16_t addr = 0;
-    for (uint16_t i = 0; i < n; i++) {
-        uint8_t tmp = pgm_read_word(LIST + i);
-        extram_write<uint8_t>(tmp, addr, i);
-    }
-
-    // sort
-    timer_reset();
-    sort_bubble_extram<uint8_t>(addr, n);
-    t = timer_getms();
-
-    // print sorted list
-    serprint("sorted list:\n\r");
-    for (uint16_t i = 0; i < n; i++) {
-        serprintuint8(extram_read<uint8_t>(addr, i));
-        serprint("   ");
-
-        if ((i + 1) % 16 == 0)
-            serprint("\n\r");
-    }
-    serprint("\n\r");
-
-    // print time
-    serprint("elapsed time: ");
-    serprintuint32(t);
-    serprint(" ms\n\r");
-
-    // endless loop
+    // endless main loop
     while (1) {
-    };
+        ////////////////* INTERNAL RAM *////////////////
+        serprint("INTERNAL RAM\n\r");
+
+        // initialize list for sorting
+        uint8_t list[n];
+        for (uint16_t i = 0; i < n; i++) {
+            list[i] = pgm_read_word(LIST + i);
+        }
+
+        // sort
+        timer_reset();
+        sort_bubble<uint8_t>(list, n);
+        t = timer_getms();
+
+        // print sorted list
+        serprint("sorted list:\n\r");
+        for (uint16_t i = 0; i < n; i++) {
+            serprintuint8(list[i]);
+            serprint("   ");
+
+            if ((i + 1) % 16 == 0)
+                serprint("\n\r");
+        }
+        serprint("\n\r");
+
+        // print time
+        serprint("elapsed time: ");
+        serprintuint32(t);
+        serprint(" ms\n\r");
+
+        ////////////////* EXTERNAL RAM *////////////////
+        serprint("\n\r\n\rEXTERNAL RAM\n\r");
+
+        // initialize list for sorting
+        uint16_t addr = 0;
+        for (uint16_t i = 0; i < n; i++) {
+            uint8_t tmp = pgm_read_word(LIST + i);
+            extram_write<uint8_t>(tmp, addr, i);
+        }
+
+        // sort
+        timer_reset();
+        sort_bubble_extram<uint8_t>(addr, n);
+        t = timer_getms();
+
+        // print sorted list
+        serprint("sorted list:\n\r");
+        for (uint16_t i = 0; i < n; i++) {
+            serprintuint8(extram_read<uint8_t>(addr, i));
+            serprint("   ");
+
+            if ((i + 1) % 16 == 0)
+                serprint("\n\r");
+        }
+        serprint("\n\r");
+
+        // print time
+        serprint("elapsed time: ");
+        serprintuint32(t);
+        serprint(" ms\n\r");
+
+        // wait for user to run test again
+        serprint("\n\r\n\r\n\r");
+        wait_key_remind("TEST FINISHED. PRESS ANY KEY TO RUN IT AGAIN.\n\r", 5000);
+        serprint("\n\r");
+    }
 }
