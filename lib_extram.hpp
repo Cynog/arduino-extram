@@ -8,6 +8,7 @@
 #pragma once
 
 #include <avr/io.h>
+#include <util/delay.h>
 
 #include "config.hpp"
 
@@ -46,28 +47,31 @@ T extram_read(uint16_t addr, uint16_t ind = 0) {
     // send starting address to shifting register
     send_addr_to_sr(addr_extram);
 
+    // set OE to LOW
+    PORT_OE &= ~MASK_OE;
+
+    // set IO pins to input with pullup
+    DDR_IO0 &= ~MASK_IO0;
+    PORT_IO0 |= MASK_IO0;
+    DDR_IO1 &= ~MASK_IO1;
+    PORT_IO1 |= MASK_IO1;
+
     // read the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
         // least significant bits of address
         PORT_ADDRLSB &= ~MASK_ADDRLSB;
         PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
 
-        // set OE to LOW
-        PORT_OE &= ~MASK_OE;
-
-        // set IO pins to input with pullup
-        DDR_IO0 &= ~MASK_IO0;
-        PORT_IO0 |= MASK_IO0;
-        DDR_IO1 &= ~MASK_IO1;
-        PORT_IO1 |= MASK_IO1;
+        // wait for output ready
+        _delay_us(0.12);
 
         // read from RAM
         ptr[i] = PIN_IO0 & MASK_IO0;
         ptr[i] |= PIN_IO1 & MASK_IO1;
-
-        // set OE back to HIGH
-        PORT_OE |= MASK_OE;
     }
+
+    // set OE back to HIGH
+    PORT_OE |= MASK_OE;
 
     // return
     return data;
@@ -92,15 +96,15 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
     // send starting address to shifting register
     send_addr_to_sr(addr_extram);
 
+    // set IO pins to output
+    DDR_IO0 |= MASK_IO0;
+    DDR_IO1 |= MASK_IO1;
+
     // write the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
         // least significant bits of address
         PORT_ADDRLSB &= ~MASK_ADDRLSB;
         PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
-
-        // set IO pins to output
-        DDR_IO0 |= MASK_IO0;
-        DDR_IO1 |= MASK_IO1;
 
         // set IO pins
         PORT_IO0 &= ~MASK_IO0;
