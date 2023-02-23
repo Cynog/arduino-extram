@@ -1,7 +1,7 @@
 # definitions
-SRCS = test test_perf test_perf_fill test_sort_uint8 test_sort_uint16 test_poisson test_time
-OBJS = lib_usart.cpp lib_extram.cpp lib_time.cpp lib_poisson.cpp
-HDRS = lib_usart.hpp lib_extram.hpp lib_time.hpp lib_sort.hpp lib_poisson.hpp
+SRCS = test test_perf test_perf_fill test_sort_uint8 test_sort_uint16 test_poisson test_timer
+OBJS = lib_usart.cpp lib_extram.cpp lib_timer.cpp lib_poisson.cpp
+HDRS = lib_usart.hpp lib_extram.hpp lib_timer.hpp lib_sort.hpp lib_poisson.hpp
 
 GXX = avr-g++
 GCCFLAGS = -Wall -g -O3 -mmcu=atmega328 -DF_CPU=16000000UL #-fpermissive

@@ -8,7 +8,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 
-#include "lib_time.hpp"
+#include "lib_timer.hpp"
 #include "lib_usart.hpp"
 
 int main(void) {

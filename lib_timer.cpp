@@ -1,4 +1,4 @@
-#include "lib_time.hpp"
+#include "lib_timer.hpp"
 
 // outer counter for ms
 static volatile uint32_t timer_val = 0;

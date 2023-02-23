@@ -12,7 +12,7 @@
 #include <stdlib.h>
 
 #include "lib_extram.hpp"
-#include "lib_time.hpp"
+#include "lib_timer.hpp"
 
 /**
  * @brief Initialize USART with baud rate 3600 in transmit and receive mode

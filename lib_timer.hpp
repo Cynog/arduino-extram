@@ -1,5 +1,5 @@
 /**
- * @file lib_time.hpp
+ * @file lib_timer.hpp
  * @author Cynog (github.com/Cynog)
  * @brief Simple library to measure time in milliseconds.
  * 

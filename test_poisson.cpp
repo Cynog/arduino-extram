@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #include "lib_poisson.hpp"
-#include "lib_time.hpp"
+#include "lib_timer.hpp"
 #include "lib_usart.hpp"
 
 int main(void) {
