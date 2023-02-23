@@ -1,10 +1,13 @@
 # definitions
-SRCS = test test_perf test_perf_fill test_sort_uint8 test_sort_uint16 test_poisson test_timer
-OBJS = lib_usart.cpp lib_extram.cpp lib_timer.cpp lib_poisson.cpp
-HDRS = lib_usart.hpp lib_extram.hpp lib_timer.hpp lib_sort.hpp lib_poisson.hpp
+SRCS := $(wildcard test*.cpp)
+TESTS := $(patsubst %.cpp,%,$(SRCS))
+LIBS := $(wildcard lib*.cpp)
+HDRS := $(wildcard *.hpp)
+TOOLS := screen cu
 
-GXX = avr-g++
-GCCFLAGS = -Wall -g -O3 -mmcu=atmega328 -DF_CPU=16000000UL #-fpermissive
+# definitions
+GXX := avr-g++
+GCCFLAGS := -Wall -g -O3 -mmcu=atmega328 -DF_CPU=16000000UL #-fpermissive
 
 
 # select the first arduino connected to the computer by serial id
@@ -15,11 +18,10 @@ $(eval serialid=$(shell find /dev/serial/by-id/ -name "*Arduino*" | head -1))
 help:
 	@echo "USAGE: make one of the following recipies"
 	@echo "\nC++ programs:"
-	@echo $(SRCS) | tr " " "\n" 
+	@echo $(TESTS) | tr " " "\n" 
 	@echo "\nTools:"
-	@echo "screen"
-	@echo "cu"
-
+	@echo $(TOOLS) | tr " " "\n" 
+	
 
 # connect to serial port using screen
 screen:
@@ -37,9 +39,9 @@ cu:
 
 
 # C: compiling and flashing
-%: %.cpp $(OBJS) $(HDRS)
+%: %.cpp $(LIBS) $(HDRS)
 	@echo "COMPILING..."
-	$(GXX) $(GCCFLAGS) $@.cpp $(OBJS) -o $@.bin
+	$(GXX) $(GCCFLAGS) $@.cpp $(LIBS) -o $@.bin
 	@echo "\n\n\nCONVERTING TO HEX..."
 	avr-objcopy -j .text -j .data -O ihex $@.bin $@.hex
 	@echo "\n\n\nFLASHING..."
