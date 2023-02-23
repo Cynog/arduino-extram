@@ -169,13 +169,17 @@ This is a library for benchmarking with bubble sort implemented on internal and 
 #### lib_poisson
 
 This is another library for benchmarking with a Jacobi-solver for the 2d-Poisson equation with dirichlet boundary conditions on the unit square $\Omega = [0, 1]^2$.
+
 $$
--\Delta \phi = f \text{\ \ \ with respect to\ \ \ } \phi = 0 \text{\ \ \ on\ \ \ } \delta \Omega
+-\Delta \phi = f \text{ with respect to } \phi = 0 \text{ on } \delta \Omega
 $$
+
 The according Jacobi grid update can be written as
+
 $$
 \phi^\text{new}_{i,j} = \frac{1}{4} \left(\phi^\text{old}_{i+1,j} + \phi^\text{old}_{i-1,j} + \phi^\text{old}_{i,j+1} + \phi^\text{old}_{i,j-1} - f_{i,j}\right)\text{.}
 $$
+
 Typically $\phi^\text{new}$ and $\phi^\text{old}$ are both allocated in storage, but because of the very limited RAM space of the Arduino, I have only one $\phi$ in storage and I am buffering the entries of phi that have been overwritten until they are used again as left and top neighbours for the grid update.\
 This approach has the effect of reducing the number of external RAM accesses required in the function ```solve_extram()```, because this buffer is stored on internal RAM. Then i implemented another function ```solve_extram_buffered()``` to reduce the number of accesses on the external RAM even further.
 
