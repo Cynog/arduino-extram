@@ -56,21 +56,158 @@ There are several libraries in the project. The main library for communication w
 
 #### lib_extram
 
-#### lib_poisson
+This is the core part of the repository. This library carries out the read and write access of the external RAM. The pinout and other useful definitions are defined in ```config.hpp```. Then we will take a closer look at the librarys functions in more detail.
+
+The ```extram_setup()``` function needs to be called once and it configures the required I/O pins of the Arduino.
+
+The ```send_addr_to_sr()``` funcion takes the $13$-bit address of the external SRAM and sends it serially to the shifting register. Notice that this code above only sends $A_3:A_{12}$ to the shifting register, as ```ADDR_MSB``` is $12$ and ```ADDR_SR_LSB``` is $3$. $A_0 : A_2$ is connected directly to the Arduino which will be explained now with the read and write operations.
+```C++
+void send_addr_to_sr(uint16_t addr) {
+    // send each bit starting from most significant
+    for (uint16_t i = (1 << ADDR_MSB); i >= (1 << (ADDR_SR_LSB - 1)); i >>= 1) {
+        if (addr & i)  // send 1
+            PORT_SER |= MASK_SER;
+        else  // send 0
+            PORT_SER &= ~MASK_SER;
+
+        // read into shifting register
+        PORT_SRCLK |= MASK_SRCLK;
+        PORT_SRCLK &= ~MASK_SRCLK;
+    }
+}
+```
+
+The funcion ```extram_read()``` and the function ```extram write()``` carry out the read and write operations on the external SRAM. They are implemented using templates, which makes it easy to store and access different data types on the external SRAM.\
+As the external SRAM is organized in bytes, we have to read/write in bytes. If the considered data type has more than one byte, we will store it contiguous on the external SRAM. This is done using a reinterpret cast of the data pointer to ```uint8_t```. At this point it is important, that $A_0 : A_2$ is connected directly to the Arduino. Because of this it suffices to call the costly ```send_addr_to_sr()``` function only once to jump to the right position on the external SRAM, but the contiguous single bytes that we want to access there can be switched using $A_0:A_2$. This increases performance significantly for larger data types, as we will later see in the benchmarks, with the only requirement, that the address has to be a multiple of the size of the data type.\
+To control read/write functionaliy of the external SRAM, the arduino changes the state of the output enable $\overline{OE}$ and write enable $\overline{WE}$ accordingly.
+
+```C++
+template <typename T>
+T extram_read(uint16_t addr, uint16_t ind = 0) {
+    // extram address
+    uint16_t addr_extram = addr + ind * sizeof(T);
+
+    // variable to return
+    T data;
+
+    // pointer to read the single bytes
+    uint8_t *ptr = reinterpret_cast<uint8_t *>(&data);
+
+    // send starting address to shifting register
+    send_addr_to_sr(addr_extram);
+
+    // read the single bytes
+    for (uint8_t i = 0; i < sizeof(T); i++) {
+        // least significant bits of address
+        PORT_ADDRLSB &= ~MASK_ADDRLSB;
+        PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
+
+        // set OE to LOW
+        PORT_OE &= ~MASK_OE;
+
+        // set IO pins to input with pullup
+        DDR_IO0 &= ~MASK_IO0;
+        PORT_IO0 |= MASK_IO0;
+        DDR_IO1 &= ~MASK_IO1;
+        PORT_IO1 |= MASK_IO1;
+
+        // read from RAM
+        ptr[i] = PIN_IO0 & MASK_IO0;
+        ptr[i] |= PIN_IO1 & MASK_IO1;
+
+        // set OE back to HIGH
+        PORT_OE |= MASK_OE;
+    }
+
+    // return
+    return data;
+}
+```
+
+```C++
+template <typename T>
+void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
+    // extram address
+    uint16_t addr_extram = addr + ind * sizeof(T);
+
+    // pointer to write single bytes
+    uint8_t *ptr = reinterpret_cast<uint8_t *>(&data);
+
+    // send starting address to shifting register
+    send_addr_to_sr(addr_extram);
+
+    // write the single bytes
+    for (uint8_t i = 0; i < sizeof(T); i++) {
+        // least significant bits of address
+        PORT_ADDRLSB &= ~MASK_ADDRLSB;
+        PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
+
+        // set IO pins to output
+        DDR_IO0 |= MASK_IO0;
+        DDR_IO1 |= MASK_IO1;
+
+        // set IO pins
+        PORT_IO0 &= ~MASK_IO0;
+        PORT_IO0 |= ptr[i] & MASK_IO0;
+        PORT_IO1 &= ~MASK_IO1;
+        PORT_IO1 |= ptr[i] & MASK_IO1;
+
+        // give LOW pulse on WE
+        PORT_WE &= ~MASK_WE;
+        PORT_WE |= MASK_WE;
+    }
+
+    // return
+    return;
+}
+```
 
 #### lib_sort
 
-#### lib_time
+This is a library for benchmarking with bubble sort implemented on internal and external RAM. There is also a chunked bubble sort algorithm implemented on the internal RAM and on the external RAM. For the cunked version on external RAM, one can specify if the chunks are buffered on internal RAM for sorting.
+
+#### lib_poisson
+
+This is another library for benchmarking with a Jacobi-solver for the 2d-Poisson equation with dirichlet boundary conditions on the unit square $\Omega = [0, 1]^2$.
+$$-\Delta \phi = f \text{\ \ \ with respect to\ \ \ } \phi = 0 \text{\ \ \ on\ \ \ } \delta \Omega$$
+
+The according Jacobi grid update can be written as
+$$\phi^\text{new}_{i,j} = \frac{1}{4} \left(\phi^\text{old}_{i+1,j} + \phi^\text{old}_{i-1,j} + \phi^\text{old}_{i,j+1} + \phi^\text{old}_{i,j-1} - f_{i,j}\right)\text{.}$$
+
+Typically $\phi^\text{new}$ and $\phi^\text{old}$ are both allocated in storage, but because of the very limited RAM space of the Arduino, I have only one $\phi$ in storage and I am buffering the entries of phi that have been overwritten until they are used again as left and top neighbours for the grid update.\
+This approach has the effect of reducing the number of external RAM accesses required in the function ```solve_extram()```, because this buffer is stored on internal RAM. Then i implemented another function ```solve_extram_buffered()``` to reduce the number of accesses on the external RAM even further.
+
 
 #### lib_usart
+
+This is a helper libary for serial printing using the usart. One could also use the library from the Arduino IDE. After calling the ```usart_setup()``` function once, one can use all implemented serial print funcions for the specific data types.
+
+#### lib_time
+
+This is a helper library to measure the time in ms using the Timer/Counter 0. One could also use ```millis()``` command from Arduino IDE. The following code shows the basic usage.
+
+```C++
+// setup millisecond timer
+timer_setup(); // only one call required
+uint32_t t;
+
+// measure and print time
+timer_reset();
+// CODE TO BE MEASURED HERE
+t = timer_getms();
+serprintuint32(t);
+serprint(" ms\n\r");
+```
 
 
 
 ### 3.2 Tests
 
-#### test_perf_fill
+#### test
 
 #### test_perf
+
+#### test_perf_fill
 
 #### test_poisson
 
