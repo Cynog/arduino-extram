@@ -116,7 +116,4 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
         PORT_WE &= ~MASK_WE;
         PORT_WE |= MASK_WE;
     }
-
-    // return
-    return;
 }
