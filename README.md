@@ -1,4 +1,4 @@
-# External SRAM C++ library for Arduino
+# External SRAM C++ Library for Arduino
 
 This repository features an implementation of a C++ library for an external SRAM for the Arduino Uno. More specifically the **HM3-2064-5** external RAM was used together with two **74HC595** shifting registers. This external RAM accepts $8192$ addresses each pointing to a single byte. The basic structure is, that the $13$-bit address is sent serially to the shifting registers and then the Arduino can perform a read or write on the specific address.\
 As acces times on RAM memory are crucial for performance, the project is focused on reducing the overhead of the external RAM and shows the idea of buffering in the faster internal RAM - analog to how caching works on modern CPUs.
@@ -188,7 +188,7 @@ This approach has the effect of reducing the number of external RAM accesses req
 
 This is a helper libary for serial printing using the usart. One could also use the library from the Arduino IDE. After calling the ```usart_setup()``` function once, one can use all implemented serial print funcions for the specific data types.
 
-#### lib_time
+#### lib_timer
 
 This is a helper library to measure the time in ms using the Timer/Counter 0. One could also use ```millis()``` command from Arduino IDE. The following code shows the basic usage.
 
@@ -215,15 +215,55 @@ This is a simple test which checks the functionality of the external RAM. It sho
 
 #### test_perf
 
+This is a test which measures the time of reading and writing a vector of length $1024$ of different data typpes to memory. The following table shows the results.
+
+| data type           | size     | write time | read time |
+| ------------------- | -------- | ---------- | --------- |
+| uint8_t             | $1$ byte | $8$ ms     | $8$ ms    |
+| uint16_t            | $2$ byte | $11$ ms    | $11$ ms   |
+| uint32_t <br> float | $4$ byte | $16$ ms    | $15$ ms   |
+| uint64_t            | $8$ byte | $24$ ms    | $22$ ms   |
+
 #### test_perf_fill
+
+In this test the whole external RAM is filled with a different data type and bandwith of read and write operations is measured. The following table shows the results.
+
+| data type          | size     | write time | write bandwidth | read time | read bandwidth  |
+| ------------------ | -------- | ---------- | --------------- | --------- | --------------- |
+| uint8_t            | $1$ byte | $70$ ms    | $117029$ byte/s | $69$ ms   | $118725$ byte/s |
+| uint16_t           | $2$ byte | $47$ ms    | $174298$ byte/s | $45$ ms   | $182044$ byte/s |
+| uint32_t <br>float | $4$ byte | $33$ ms    | $248242$ byte/s | $31$ ms   | $264258$ byte/s |
+| uint64_t           | $8$ byte | $24$ ms    | $341333$ byte/s | $22$ ms   | $372364$ byte/s |
 
 #### test_poisson
 
+This program solved the Poisson equation with float precision for the three different methods.
+
+| method                   | time      |
+| ------------------------ | --------- |
+| internal                 | $1587$ ms |
+| external                 | $4541$ ms |
+| external buffered        | $3423$ ms |
+| external double buffered | $3169$ ms |
+
 #### test_sort_uint8
+
+| method   | time     |
+| -------- | -------- |
+| internal | $27$ ms  |
+| external | $820$ ms |
 
 #### test_sort_uint16
 
-#### test_time to estimate timer overhead
+| method                    | time      |
+| ------------------------- | --------- |
+| internal                  | $46$ ms   |
+| internal chunked          | $8$ ms    |
+| external                  | $1073$ ms |
+| external external chunked | $74$ ms   |
+| external internal chunked | $18$ ms   |
+
+#### test_timer to estimate timer overhead
 
 The program ```test_timer.cpp``` tries to find the overhead caused by the time measurement implemented in ```lib_time```. If one plugs in $100$ s in the ```_delay_ms()``` function from ```util/delay.h```, then we measure the following times with the ```lib_time``` library for counting milliseconds and decimilliseconds respectively.
 

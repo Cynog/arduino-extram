@@ -42,7 +42,7 @@ int main(void) {
         if (phi == NULL)
             serprint("PHI MEMORY ALLOCATION FAILED\n\r");
 
-        // solve poisson equation
+        // solve poisson equation in internal RAM
         timer_reset();
         retval = solve(N, f_source, maxit, tol, phi);
         t = timer_getms();
@@ -60,7 +60,7 @@ int main(void) {
         // external SRAM starting address for phi
         uint16_t phi_addr = 0;
 
-        // solve poisson equation
+        // solve poisson equation on external RAM with external buffer
         serprint("\n\rEXTERNAL RAM\n\r");
         timer_reset();
         retval = solve_extram(N, f_source, maxit, tol, phi_addr);
@@ -75,10 +75,25 @@ int main(void) {
         serprintuint32(t);
         serprint(" ms\n\r");
 
-        // solve buffered poisson equation
-        serprint("\n\rEXTERNAL RAM HIGHLY BUFFERED\n\r");
+        // solve poisson equation on external RAM with internal buffer
+        serprint("\n\rEXTERNAL RAM INTERNAL BUFFER\n\r");
         timer_reset();
         retval = solve_extram_buffered(N, f_source, maxit, tol, phi_addr);
+        t = timer_getms();
+        serprint("flag = ");
+        serprintint(retval.flag);
+        serprint("\n\riter = ");
+        serprintint(retval.iter);
+        serprint("\n\rresidual = ");
+        serprintfloat(retval.residual, 0, 10);
+        serprint("\n\relapsed time = ");
+        serprintuint32(t);
+        serprint(" ms\n\r");
+
+        // solve buffered poisson equation on external RAM with double internal buffer
+        serprint("\n\rEXTERNAL RAM DOUBLE INTERNAL BUFFER\n\r");
+        timer_reset();
+        retval = solve_extram_doublebuffered(N, f_source, maxit, tol, phi_addr);
         t = timer_getms();
         serprint("flag = ");
         serprintint(retval.flag);
