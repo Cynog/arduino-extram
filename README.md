@@ -41,7 +41,11 @@ For Linux users there is a Makefile for compiling, flashing and connecting to se
 * ```screen``` or ```cu``` (serial connection)
 
 ### 2.2 Usage of the Makefile
-*how to use the Makefile*
+
+The Makefile automatically finds a connected Arduino. Calling just ```make``` without any further recipies will show you all possible main programs to flash on the Arduino together with two recipies to connect to the serial port via screen or cu. As an example, to compile and flash the basic test program and to connect to the serial port, one can use the following command.
+```
+make test screen
+```
 
 
 ## 3 Implementation
