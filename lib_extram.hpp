@@ -47,7 +47,7 @@ T extram_read(uint16_t addr, uint16_t ind = 0) {
     // send starting address to shifting register
     send_addr_to_sr(addr_extram);
 
-    // set OE to LOW
+    // set OE active
     PORT_OE &= ~MASK_OE;
 
     // set IO pins to input with pullup
@@ -65,12 +65,12 @@ T extram_read(uint16_t addr, uint16_t ind = 0) {
         // wait for output ready
         _delay_us(0.12);
 
-        // read from RAM
+        // read from external RAM
         ptr[i] = PIN_IO0 & MASK_IO0;
         ptr[i] |= PIN_IO1 & MASK_IO1;
     }
 
-    // set OE back to HIGH
+    // set OE inactive
     PORT_OE |= MASK_OE;
 
     // return
@@ -112,7 +112,7 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
         PORT_IO1 &= ~MASK_IO1;
         PORT_IO1 |= ptr[i] & MASK_IO1;
 
-        // give LOW pulse on WE
+        // write to external RAM by giving low pulse on WE
         PORT_WE &= ~MASK_WE;
         PORT_WE |= MASK_WE;
     }
