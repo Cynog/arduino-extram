@@ -63,11 +63,10 @@ make test screen
 
 ### 3.1 lib_extram
 
-This is the core part of the repository. This library carries out the read and write access of the external RAM. The pinout and other useful definitions are defined in ```config.hpp```. Then we will take a closer look at the librarys functions in more detail.
+This is the core part of the repository. This library carries out the read and write access of the external RAM. The pinout and other useful definitions are found in ```config.hpp```.\
+The ```extram_setup()``` function needs to be called once and it configures the required I/O pins of the Arduino to communicate with the shifting registers and the external SRAM.\
 
-The ```extram_setup()``` function needs to be called once and it configures the required I/O pins of the Arduino.
-
-The ```send_addr_to_sr()``` funcion takes the $13$-bit address of the external SRAM and sends it serially to the shifting register. Notice that this code above only sends $A_3:A_{12}$ to the shifting register, as ```ADDR_MSB``` is $12$ and ```ADDR_SR_LSB``` is $3$. $A_0 : A_2$ is connected directly to the Arduino which will be explained now with the read and write operations.
+The ```send_addr_to_sr()``` funcion takes the $13$-bit address of the external SRAM and sends it serially to the shifting register. Notice that the code above only sends A<sub>3</sub> : A<sub>12</sub> to the shifting register, as ```ADDR_MSB``` is $12$ and ```ADDR_SR_LSB``` is $3$. The three least significant bits of the address A<sub>0</sub> : A<sub>2</sub> are connected directly to the Arduino, which will be explained in the next paragraph with the read and write operations.
 ```C++
 void send_addr_to_sr(uint16_t addr) {
     // send each bit starting from most significant
@@ -85,8 +84,8 @@ void send_addr_to_sr(uint16_t addr) {
 ```
 
 The funcion ```extram_read()``` and the function ```extram write()``` carry out the read and write operations on the external SRAM. They are implemented using templates, which makes it easy to store and access different data types on the external SRAM.\
-As the external SRAM is organized in bytes, we have to read/write in bytes. If the considered data type has more than one byte, we will store it contiguous on the external SRAM. This is done using a reinterpret cast of the data pointer to ```uint8_t```. At this point it is important, that $A_0 : A_2$ is connected directly to the Arduino. Because of this it suffices to call the costly ```send_addr_to_sr()``` function only once to jump to the right position on the external SRAM, but the contiguous single bytes that we want to access there can be switched using $A_0:A_2$. This increases performance significantly for larger data types, as we will later see in the benchmarks, with the only requirement, that the address has to be a multiple of the size of the data type.\
-To control read/write functionaliy of the external SRAM, the arduino changes the state of the output enable <span style="text-decoration:overline">OE</span> and write enable <span style="text-decoration:overline">WE</span> accordingly.
+The external SRAM is organized in bytes. If the considered data type has more than one byte, we will store it contiguous on the external SRAM. This is done using a reinterpret cast of the data pointer to ```uint8_t```. At this point it is important, that the three least significant bits A<sub>0</sub> : A<sub>2</sub> of the address are connected directly to the Arduino. Because of this, it suffices to call the costly ```send_addr_to_sr()``` function only once to jump to the right position on the external SRAM, while we can access the following contiguous bytes by changing A<sub>0</sub> : A<sub>2</sub> directly. This increases performance significantly for larger data types, as we will later see in the benchmarks. The only requirement is, that the address has to be a multiple of the size of the data type.\
+To control read and write functionaliy of the external SRAM, the arduino changes the state of the output enable <span style="text-decoration:overline">OE</span> and write enable <span style="text-decoration:overline">WE</span> accordingly.
 
 ```C++
 template <typename T>
@@ -103,28 +102,31 @@ T extram_read(uint16_t addr, uint16_t ind = 0) {
     // send starting address to shifting register
     send_addr_to_sr(addr_extram);
 
+    // set OE to LOW
+    PORT_OE &= ~MASK_OE;
+
+    // set IO pins to input with pullup
+    DDR_IO0 &= ~MASK_IO0;
+    PORT_IO0 |= MASK_IO0;
+    DDR_IO1 &= ~MASK_IO1;
+    PORT_IO1 |= MASK_IO1;
+
     // read the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
         // least significant bits of address
         PORT_ADDRLSB &= ~MASK_ADDRLSB;
         PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
 
-        // set OE to LOW
-        PORT_OE &= ~MASK_OE;
-
-        // set IO pins to input with pullup
-        DDR_IO0 &= ~MASK_IO0;
-        PORT_IO0 |= MASK_IO0;
-        DDR_IO1 &= ~MASK_IO1;
-        PORT_IO1 |= MASK_IO1;
+        // wait for output ready
+        _delay_us(0.12);
 
         // read from RAM
         ptr[i] = PIN_IO0 & MASK_IO0;
         ptr[i] |= PIN_IO1 & MASK_IO1;
-
-        // set OE back to HIGH
-        PORT_OE |= MASK_OE;
     }
+
+    // set OE back to HIGH
+    PORT_OE |= MASK_OE;
 
     // return
     return data;
@@ -143,15 +145,15 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
     // send starting address to shifting register
     send_addr_to_sr(addr_extram);
 
+    // set IO pins to output
+    DDR_IO0 |= MASK_IO0;
+    DDR_IO1 |= MASK_IO1;
+
     // write the single bytes
     for (uint8_t i = 0; i < sizeof(T); i++) {
         // least significant bits of address
         PORT_ADDRLSB &= ~MASK_ADDRLSB;
         PORT_ADDRLSB |= MASK_ADDRLSB & (addr_extram + i);
-
-        // set IO pins to output
-        DDR_IO0 |= MASK_IO0;
-        DDR_IO1 |= MASK_IO1;
 
         // set IO pins
         PORT_IO0 &= ~MASK_IO0;
@@ -163,95 +165,104 @@ void extram_write(T &data, uint16_t addr, uint16_t ind = 0) {
         PORT_WE &= ~MASK_WE;
         PORT_WE |= MASK_WE;
     }
-
-    // return
-    return;
 }
 ```
 
-#### test
+#### test: functionality
 
-This is a simple test which checks the functionality of the external RAM. It should be run after connecting the hardware to make sure that everything is fine. For a few different data types it writes a vector to addresses spread randomly over the whole external SRAM and tells the user if there are any errors when reading the data again.
+This is a simple test which checks the functionality of the external RAM. It should be run after connecting the hardware to make sure that everything is working. For a few different data types, a vector is written to addresses spread randomly over the whole external SRAM and the user is notified if are any errors when reading the data again.
 
-#### test_perf
+#### test_perf: read/write times for vector of different data types with fixed length
 
-This is a test which measures the time of reading and writing a vector of length $1024$ of different data typpes to memory. The following table shows the results.
+This is a test which measures the time of reading and writing a vector of length $1024$ of different data types on external RAM. The following table shows the results.
 
 | data type           | size     | write time | read time |
 | ------------------- | -------- | ---------- | --------- |
 | uint8_t             | $1$ byte | $8$ ms     | $8$ ms    |
-| uint16_t            | $2$ byte | $11$ ms    | $11$ ms   |
-| uint32_t <br> float | $4$ byte | $16$ ms    | $15$ ms   |
-| uint64_t            | $8$ byte | $24$ ms    | $22$ ms   |
+| uint16_t            | $2$ byte | $11$ ms    | $10$ ms   |
+| uint32_t <br> float | $4$ byte | $15$ ms    | $13$ ms   |
+| uint64_t            | $8$ byte | $21$ ms    | $16$ ms   |
 
-#### test_perf_fill
+It seems like reading is slightly faster than writing. This makes sense, as the ```extram_write()``` functions requires a few more operations compared to ```extram_read()```.\
+Additionally we can nicely see the use of the three least significant bits of the address A_<sub>0</sub> : A<sub>2</sub> being connected directly to the Arduino. Altough ```uint64_t``` is $8$ times the size of ```uint8_t```, it takes less than $3$ times the time for reading and writing. This is because we are calling the costly function to send the most significant bits to the shifting register only once independently of the data type and then just change the directly connected bits A_<sub>0</sub> : A<sub>2</sub>, which is much faster.
 
-In this test the whole external RAM is filled with a different data type and bandwith of read and write operations is measured. The following table shows the results.
+#### test_bandwidth: read/write bandwidth for different data types
 
-| data type          | size     | write time | write bandwidth | read time | read bandwidth  |
-| ------------------ | -------- | ---------- | --------------- | --------- | --------------- |
-| uint8_t            | $1$ byte | $70$ ms    | $117029$ byte/s | $69$ ms   | $118725$ byte/s |
-| uint16_t           | $2$ byte | $47$ ms    | $174298$ byte/s | $45$ ms   | $182044$ byte/s |
-| uint32_t <br>float | $4$ byte | $33$ ms    | $248242$ byte/s | $31$ ms   | $264258$ byte/s |
-| uint64_t           | $8$ byte | $24$ ms    | $341333$ byte/s | $22$ ms   | $372364$ byte/s |
+This raises the question of the bandwidth of the read and write operations for each datatype. For this measurement, the time to read and write the whole external RAM with different datatypes is measured to calculate the corresponding bandwith. The following table shows the results.
+
+| data type          | size     | write time | write bandwidth | read time | read bandwidth |
+| ------------------ | -------- | ---------- | --------------- | --------- | -------------- |
+| uint8_t            | $1$ byte | $70$ ms    | $117$ kbyte/s   | $70$ ms   | $117$ kbyte/s  |
+| uint16_t           | $2$ byte | $45$ ms    | $182$ kbyte/s   | $42$ ms   | $195$ kbyte/s  |
+| uint32_t <br>float | $4$ byte | $30$ ms    | $273$ kbyte/s   | $26$ ms   | $315$ kbyte/s  |
+| uint64_t           | $8$ byte | $21$ ms    | $390$ kbyte/s   | $16$ ms   | $512$ kbyte/s  |
+
+This underlines the assumption from above, that reading is slightly faster than writing - especially for larger data types. The bandwidth results nicely show, how the direct control of the three least significant bits of the address improves bandwidth for bigger data types by avoiding the costly calls of ```send_addr_to_sr()``` for each byte.
 
 ### 3.2 lib_sort
 
-This is a library for benchmarking with bubble sort implemented on internal and external RAM. There is also a chunked bubble sort algorithm implemented on the internal RAM and on the external RAM. For the cunked version on external RAM, one can specify if the chunks are buffered on internal RAM for sorting.
+This is a library for benchmarking the Bubblesort algorithm. Bubblesort is implemented on internal RAM and on external RAM. Additionally there is a chunked bubblesort. The list to be sorted is divided into $n_\text{chunks}$ chunks. These chunks are sorted and later merged into the full sorted list. The simple approach implemented here requires another list of full length to store the result. The chunks for the external Bubblesort algorithm are sorted on internal and external RAM for comparison. This corresponds to the idea of caching on modern CPUs.
 
-#### test_sort_uint8
+#### test_sort_uint8 and test_sort_uint16 and test_sort_uint32 to measure bubblesort performance
 
-| method   | time     |
-| -------- | -------- |
-| internal | $27$ ms  |
-| external | $820$ ms |
+The following table shows the time to sort a vector of length $256$ of different data types using the different Bubblesort approaches. If chunks are used, then the number of chunks is always $n_\text{chunks} = 16$.
 
-#### test_sort_uint16
+| method                        | time uint8_t | time uint16_t | time uint32_t    |
+| ----------------------------- | ------------ | ------------- | ---------------- |
+| internal list without chunks  | $27$ ms      | $46$ ms       | $77$ ms          |
+| external list without chunks  | $829$ ms     | $1027$ ms     | $1356$ ms        |
+| internal list internal chunks | $6$ ms       | $8$ ms        | *not enough space* |
+| external list external chunks | $57$ ms      | $71$ ms       | $93$ ms          |
+| external list internal chunks | $14$ ms      | $18$ ms       | $24$ ms          |
 
-| method                    | time      |
-| ------------------------- | --------- |
-| internal                  | $46$ ms   |
-| internal chunked          | $8$ ms    |
-| external                  | $1073$ ms |
-| external external chunked | $74$ ms   |
-| external internal chunked | $18$ ms   |
+The chunked Bubblesort algorithm is out of competition compared to standart Bubblesort. This is because the computational effort of Bubblesort grows quadratically with the length $n$ of the list, but the cost of merging the sorted chunks only depends on $n \cdot n_\text{chunks}$.\
+For normal Bubblesort the performance on the external RAM is with a factor of $20$ - $30$ way worse compared to the internal RAM. The reason for this probably is the high number of read operations required just for comparisons without any swapping. Additionally our functions for reading and writing the external RAM can probably not be optimized as well by the compiler as the reads and writes on the internal ram.\
+The performance difference for chunked Bubblesort between internal RAM and external RAM with external chunks is smaller with around factor $9$. But the internal RAM reaches its limit quite fast. It was not possible to sort $256$ ```uint32_t``` values, as the corresponding vector takes $1024$ bytes of RAM and we need another vector of this length for merging the sorted chunks.\
+Let us consider the external RAM as the main RAM and the internal RAM as a cache analog to modern CPUs, which have way faster but also smaller caches additionally to the RAM. Between the external Bubblesort with external chunks and internal chunks, the required time is around $75\%$ lower for all three data types, which underlines the impact of caching on performance.
+
 
 ### 3.3 lib_poisson
 
-This is another library for benchmarking with a Jacobi-solver for the 2d-Poisson equation with dirichlet boundary conditions on the unit square $\Omega = [0, 1]^2$.
+This is another library for benchmarking. The 2d-Poisson equation with dirichlet boundary conditions on the unit square $\Omega = [0, 1]^2$
 
 $$
 -\Delta \phi = f \text{ with respect to } \phi = 0 \text{ on } \delta \Omega
 $$
 
-The according Jacobi grid update can be written as
+is solved using a Jacobi-solver with a mesh of $(N+2)^2$ points for discretization. The according Jacobi grid update can be written as
 
 $$
 \phi^\text{new}_{i,j} = \frac{1}{4} \left(\phi^\text{old}_{i+1,j} + \phi^\text{old}_{i-1,j} + \phi^\text{old}_{i,j+1} + \phi^\text{old}_{i,j-1} - f_{i,j}\right)\text{.}
 $$
 
-Typically $\phi^\text{new}$ and $\phi^\text{old}$ are both allocated in storage, but because of the very limited RAM space of the Arduino, I have only one $\phi$ in storage and I am buffering the entries of phi that have been overwritten until they are used again as left and top neighbours for the grid update.\
-This approach has the effect of reducing the number of external RAM accesses required in the function ```solve_extram()```, because this buffer is stored on internal RAM. Then i implemented another function ```solve_extram_buffered()``` to reduce the number of accesses on the external RAM even further.
+Typically $\phi^\text{new}$ and $\phi^\text{old}$ are both allocated in storage, but because of the very limited RAM of the Arduino, only space for one $\phi$ is allocated in storage and a buffer is used for the entries of $\phi$ which have been overwritten but are required again as left and top neighbours.\
+The function ```solve()``` is implemented on the internal RAM. The function ```solve_extram()``` is implemented on external RAM with the described buffer also on external RAM. ```solve_extram_buffered()``` has the buffer allocated on internal RAM, reducing the number of external RAM accesses. The function ```solve_extram_doublebuffered()``` has a even bigger buffer on the internal RAM to reduce the number of external RAM accesses further.
 
-#### test_poisson
+#### test_poisson: poisson jacobi-solver showing the idea of caching on modern CPUs
 
-This program solved the Poisson equation with float precision for the three different methods.
+The following table shows the times for solving the 2d-Poisson equation with the different methods described above for $N = 10$.
 
-| method                   | time      |
-| ------------------------ | --------- |
-| internal                 | $1587$ ms |
-| external                 | $4541$ ms |
-| external buffered        | $3423$ ms |
-| external double buffered | $3169$ ms |
+| method                   | description                                     | time      |
+| ------------------------ | ----------------------------------------------- | --------- |
+| internal                 | internal $\phi$ with internal buffer            | $1587$ ms |
+| external                 | external $\phi$ with external buffer            | $4142$ ms |
+| external buffered        | external $\phi$ with internal buffer            | $3160$ ms |
+| external double buffered | external $\phi$ with additional internal buffer | $2952$ ms |
+
+This shows that using only the external RAM is slower, but in this case it takes just $2.6$ times longer on the external RAM compared to the internal RAM. The other times are really interesing in the following sense.\
+Let us again consider the external RAM as the main RAM and the internal RAM as a cache analog to modern CPUs. Then the two implementations using the internal cache as a buffer show, how caching can improve performance. In our case, the most sophisticated caching approach reduces the time by around $30\%$ but in our case, the internal RAM is not that much faster than the external RAM. If the difference is bigger, one can expect much bigger performance improvements.
+
+This paragraph is meant as an outlook. Viewing modern CPUs, the compiler tries its best to make use of the CPU cache by itself, but sometimes the user has to change the program slightly to make caching possible. In our specific case, the following problem could arise. We are using a vector of length $(N+1)$ in the simple caching approach and a vector of length $2(N+1)$ in the more sophisticated one. If it happens that the internal RAM is too small to store these vectors, our caching approach will not longer work. In practical examples, this problem can happen easily, as caches are typically much smaller than RAM memory.\
+But in our case, this problem can easily be fixed. At the moment, the grid udpate is calculated row-wise. Cutting the grid in stripes and using the row-wise approach afterwards makes it possible to use a buffer depending on the stripe width instead of the whole width $N$. Considering such things can have a big impact on performance. Profilers are the means of coiche to analyse such problems.
 
 
 ### 3.4 lib_usart
 
-This is a helper libary for serial printing using the usart. One could also use the library from the Arduino IDE. After calling the ```usart_setup()``` function once, one can use all implemented serial print funcions for the specific data types.
+This is a helper libary for serial printing using the ```USART```. One could also use the ```serial``` library from the Arduino IDE. After calling the ```usart_setup()``` function once, all implemented serial print funcions for the specific data types can be used.
 
 ### 3.5 lib_timer
 
-This is a helper library to measure the time in ms using the Timer/Counter 0. One could also use ```millis()``` command from Arduino IDE. The following code shows the basic usage.
+This is a helper library to measure elapsed time in ms using the ```Timer/Counter 0```. One could also use ```millis()``` command from Arduino IDE. The following code shows the basic usage.
 
 ```C++
 // setup millisecond timer
@@ -266,16 +277,16 @@ serprintuint32(t);
 serprint(" ms\n\r");
 ```
 
-#### test_timer to estimate timer overhead
+#### test_timer: estimate timer overhead
 
-The program ```test_timer.cpp``` tries to find the overhead caused by the time measurement implemented in ```lib_time```. If one plugs in $100$ s in the ```_delay_ms()``` function from ```util/delay.h```, then we measure the following times with the ```lib_time``` library for counting milliseconds and decimilliseconds respectively.
+This test tries to find the overhead caused by the time measurement. If one plugs in $100$ s in the ```_delay_ms()``` function from ```util/delay.h```, then we measure the following times with the ```lib_time``` library for counting milliseconds and decimilliseconds respectively.
 
 | OCR1A  | precision | measured time for 100s | overhead |
 | ------ | --------- | ---------------------- | -------- |
 | $1999$ | $1$ ms    | $100382$ ms            | $0.38\%$ |
 | $199$  | $0.1$ ms  | $103963.6$ ms          | $3.96\%$ |
 
-One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler option which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$ which we usually will not even notice as our timer is only counting full milliseconds. Additionally the timer overhead should be linear, which makes all measured times easily comparable.
+One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler options, which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$, which we usually will not even notice, as our timer is only counting full milliseconds. Additionally the timer overhead should be linear, which makes all measured times easily comparable.
 
 
 

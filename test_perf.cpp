@@ -1,3 +1,10 @@
+/**
+ * @file test_perf.cpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Main program to measure the time of reading and writing a vector of length 1024 of different data types on external RAM.
+ * 
+ */
+
 #include <avr/io.h>
 #include <math.h>
 #include <util/delay.h>

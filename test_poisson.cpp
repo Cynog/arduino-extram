@@ -1,3 +1,10 @@
+/**
+ * @file test_poisson.cpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Main program to measure time of the different Jacobi-solvers for the 2d Poisson equation showing the performance improvements using caching.
+ * 
+ */
+
 #include <avr/io.h>
 #include <math.h>
 #include <stdio.h>

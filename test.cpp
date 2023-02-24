@@ -1,3 +1,10 @@
+/**
+ * @file test.cpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Main function to test the basic functionality of the external SRAM. Ideal test after first setup to check that everything it set up properly.
+ * 
+ */
+
 #include <avr/io.h>
 #include <math.h>
 #include <util/delay.h>

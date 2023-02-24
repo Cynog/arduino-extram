@@ -1,7 +1,7 @@
 /**
  * @file test_time.cpp
  * @author Cynog (github.com/Cynog)
- * @brief A simple program to determine the lib_timers influence on performance by measuring the time of the delay.h _delay_ms() function.
+ * @brief A simple program to determine the lib_timer influence on performance by measuring the time of the delay.h _delay_ms() function.
  *
  */
 

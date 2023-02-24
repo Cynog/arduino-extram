@@ -1,3 +1,10 @@
+/**
+ * @file test_bandwidth.cpp
+ * @author Cynog (github.com/Cynog)
+ * @brief Main program to measure external SRAM read and write performance for different data types. 
+ * 
+ */
+
 #include <avr/io.h>
 #include <math.h>
 #include <util/delay.h>
