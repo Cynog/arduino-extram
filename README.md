@@ -178,7 +178,7 @@ This is a simple test which checks the functionality of the external RAM. It sho
 This is a test which measures the time of reading and writing a vector of length $1024$ of different data types on external RAM. The following table shows the results.
 
 | data type           | size[B] | write time [ms] | read time [ms] |
-| ------------------- | ------- | --------------- | -------------- |
+| -------------------: | :-------: | :---------------: | :--------------: |
 | uint8_t             | $1$     | $8$             | $8$            |
 | uint16_t            | $2$     | $11$            | $10$           |
 | uint32_t <br> float | $4$     | $15$            | $13$           |
@@ -192,7 +192,7 @@ Additionally we can nicely see the use of the three least significant bits of th
 This raises the question of the bandwidth of the read and write operations for each datatype. For this measurement, the time to read and write the whole external RAM with different datatypes is measured to calculate the corresponding bandwith. The following table shows the results.
 
 | data type          | size [B] | write time [ms] | write bandwidth [kB/s] | read time [ms] | read bandwidth [kB/s] |
-| ------------------ | -------- | --------------- | ---------------------- | -------------- | --------------------- |
+| ------------------: | :--------: | :---------------: | :----------------------: | :--------------: | :---------------------: |
 | uint8_t            | $1$      | $70$            | $117$                  | $70$           | $117$                 |
 | uint16_t           | $2$      | $45$            | $182$                  | $42$           | $195$                 |
 | uint32_t <br>float | $4$      | $30$            | $273$                  | $26$           | $315$                 |
@@ -208,13 +208,13 @@ This is a library for benchmarking the Bubblesort algorithm. Bubblesort is imple
 
 The following table shows the time to sort a vector of length $256$ of different data types using the different Bubblesort approaches. If chunks are used, then the number of chunks is always $n_\text{chunks} = 16$.
 
-| method                        | time uint8_t [ms] | time uint16_t [ms] | time uint32_t [ms] |
-| ----------------------------- | ----------------- | ------------------ | ------------------ |
-| internal list without chunks  | $27$              | $46$               | $77$               |
-| external list without chunks  | $829$             | $1027$             | $1356$             |
-| internal list internal chunks | $6$               | $8$                | *not enough space* |
-| external list external chunks | $57$              | $71$               | $93$               |
-| external list internal chunks | $14$              | $18$               | $24$               |
+|                        method | time uint8_t [ms] | time uint16_t [ms] | time uint32_t [ms] |
+| ----------------------------: | :---------------: | :----------------: | :----------------: |
+|  internal list without chunks |       $27$        |        $46$        |        $77$        |
+|  external list without chunks |       $829$       |       $1027$       |       $1356$       |
+| internal list internal chunks |        $6$        |        $8$         | *not enough space* |
+| external list external chunks |       $57$        |        $71$        |        $93$        |
+| external list internal chunks |       $14$        |        $18$        |        $24$        |
 
 The chunked Bubblesort algorithm is out of competition compared to standart Bubblesort. This is because the computational effort of Bubblesort grows quadratically with the length $n$ of the list, but the cost of merging the sorted chunks only depends on $n \cdot n_\text{chunks}$.\
 For normal Bubblesort the performance on the external RAM is way worse compared to the internal RAM with a factor of $20$ - $30$. The reason for this probably is the high number of read operations required just for comparisons without any swapping. Additionally our functions for reading and writing the external RAM can not be optimized as well by the compiler, as the reads and writes on the internal RAM.\
@@ -243,12 +243,12 @@ The function ```solve()``` is implemented on the internal RAM. The function ```s
 
 The following table shows the times for solving the 2d-Poisson equation with $f$ defined in ```lib_poisson.cpp``` with the different methods described above for $N = 10$.
 
-| method                   | description                                     | time [ms] |
-| ------------------------ | ----------------------------------------------- | --------- |
-| internal                 | internal $\phi$ with internal buffer            | $1587$    |
-| external                 | external $\phi$ with external buffer            | $4142$    |
-| external buffered        | external $\phi$ with internal buffer            | $3160$    |
-| external double buffered | external $\phi$ with additional internal buffer | $2952$    |
+|                   method | description                                     | time [ms] |
+| -----------------------: | ----------------------------------------------- | :-------: |
+|                 internal | internal $\phi$ with internal buffer            |  $1587$   |
+|                 external | external $\phi$ with external buffer            |  $4142$   |
+|        external buffered | external $\phi$ with internal buffer            |  $3160$   |
+| external double buffered | external $\phi$ with additional internal buffer |  $2952$   |
 
 This shows that using only the external RAM is slower, but in this case it takes just $2.6$ times longer on the external RAM compared to the internal RAM. The other times are really interesing in the following sense.\
 Let us again consider the external RAM as the main RAM and the internal RAM as a cache analog to modern CPUs. Then the two implementations using the internal cache as a buffer show, how caching can improve performance. The most sophisticated caching approach reduces the time by around $30\%$, but in our case, the internal RAM is not that much faster than the external RAM. If the difference is bigger, one can expect even bigger relative performance improvements.
@@ -283,10 +283,10 @@ serprint(" ms\n\r");
 
 This test tries to find the overhead caused by the time measurement. If one plugs in $100$ s in the ```_delay_ms()``` function from ```util/delay.h```, then we measure the following times with the ```lib_time``` library for counting milliseconds and decimilliseconds respectively.
 
-| OCR1A  | precision [ms] | time [ms] for ```_delay_ms(100000)``` | overhead |
-| ------ | -------------- | ------------------------------------- | -------- |
-| $1999$ | $1$            | $100382$                              | $0.38\%$ |
-| $199$  | $0.1$          | $103963.6$                            | $3.96\%$ |
+|  OCR1A | precision [ms] | time [ms] for ```_delay_ms(100000)``` | overhead |
+| -----: | :------------: | :-----------------------------------: | :------: |
+| $1999$ |      $1$       |               $100382$                | $0.38\%$ |
+|  $199$ |     $0.1$      |              $103963.6$               | $3.96\%$ |
 
 One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler options, which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$, which we usually will not even notice, as our timer is only counting full milliseconds. Additionally the timer overhead should be linear, which makes all measured times easily comparable.
 
