@@ -27,14 +27,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="in"
      showgrid="false"
-     inkscape:zoom="0.88297711"
-     inkscape:cx="353.35004"
-     inkscape:cy="338.62712"
+     inkscape:zoom="9.9897456"
+     inkscape:cx="495.1077"
+     inkscape:cy="314.92293"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
      inkscape:window-y="32"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      inkscape:current-layer="svg10582" />
   <rect
      style="fill:#ffffff;stroke-width:0.901923"
@@ -28905,35 +28905,35 @@
   </g>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
-     x="144.25038"
-     y="240.38374"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
+     x="144.15538"
+     y="240.3396"
      id="text12677"><tspan
        sodipodi:role="line"
        id="tspan12675"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:OCRA;-inkscape-font-specification:OCRA;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
-       x="144.25038"
-       y="240.38374">74HC595</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
+       x="144.15538"
+       y="240.3396">74HC595</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
-     x="230.65039"
-     y="240.38374"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
+     x="230.55539"
+     y="240.3396"
      id="text12677-3"><tspan
        sodipodi:role="line"
        id="tspan12675-6"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:OCRA;-inkscape-font-specification:OCRA;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
-       x="230.65039"
-       y="240.38374">74HC595</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
+       x="230.55539"
+       y="240.3396">74HC595</tspan></text>
   <text
      xml:space="preserve"
-     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
-     x="381.80679"
-     y="235.76326"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
+     x="381.66333"
+     y="235.67491"
      id="text12677-3-7"><tspan
        sodipodi:role="line"
        id="tspan12675-6-5"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:OCRA;-inkscape-font-specification:OCRA;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
-       x="381.80679"
-       y="235.76326">HM3-2064-5</tspan></text>
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-align:center;text-anchor:middle;fill:#f2f2f2;stroke-width:0.75"
+       x="381.66333"
+       y="235.67491">HM3-2064-5</tspan></text>
 </svg>

@@ -5,9 +5,9 @@
    version="1.2"
    x="0in"
    y="0in"
-   width="0.88099998in"
+   width="0.93000001in"
    height="1in"
-   viewBox="0 0 63.431997 71.999998"
+   viewBox="0 0 66.959998 71.999998"
    id="svg87"
    sodipodi:docname="74HC595_pinout.svg"
    inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
@@ -31,24 +31,24 @@
      inkscape:document-units="in"
      showgrid="false"
      inkscape:zoom="5.9017635"
-     inkscape:cx="18.299615"
-     inkscape:cy="37.107553"
+     inkscape:cx="24.230046"
+     inkscape:cy="49.137855"
      inkscape:window-width="1920"
      inkscape:window-height="1011"
      inkscape:window-x="0"
      inkscape:window-y="32"
-     inkscape:window-maximized="0"
+     inkscape:window-maximized="1"
      inkscape:current-layer="g85" />
   <g
      partID="104670"
      id="g85"
-     transform="translate(-1.3680017,24.119999)">
+     transform="translate(4.6799979,24.119999)">
     <rect
-       style="fill:#ffffff;fill-opacity:1;stroke-width:0.566759"
+       style="fill:#ffffff;fill-opacity:1;stroke-width:0.582307"
        id="rect161907"
-       width="63.431995"
+       width="66.959999"
        height="72"
-       x="1.3680017"
+       x="-4.6799979"
        y="-24.119999" />
     <g
        id="breadboard"
@@ -174,83 +174,83 @@
          id="polygon36" />
       <polygon
          fill="#8c8c8c"
-         points="4.68,1.685 2.52,1.685 2.52,3.125 6.12,3.125 6.12,2.347 "
+         points="6.12,2.347 4.68,1.685 2.52,1.685 2.52,3.125 6.12,3.125 "
          id="polygon38" />
       <polygon
          fill="#8c8c8c"
-         points="52.919,1.685 51.478,2.347 51.478,3.125 55.079,3.125 55.079,1.685 "
+         points="55.079,1.685 52.919,1.685 51.478,2.347 51.478,3.125 55.079,3.125 "
          id="polygon40" />
       <polygon
          fill="#8c8c8c"
-         points="4.68,22.074 6.12,21.412 6.12,20.636 2.52,20.636 2.52,22.074 "
+         points="2.52,22.074 4.68,22.074 6.12,21.412 6.12,20.636 2.52,20.636 "
          id="polygon42" />
       <polygon
          fill="#8c8c8c"
-         points="52.919,22.074 55.079,22.074 55.079,20.636 51.478,20.636 51.478,21.412 "
+         points="51.478,21.412 52.919,22.074 55.079,22.074 55.079,20.636 51.478,20.636 "
          id="polygon44" />
       <polygon
          fill="#8c8c8c"
-         points="13.32,2.347 11.88,1.685 9.72,1.685 8.28,2.347 8.28,3.125 13.32,3.125 "
+         points="8.28,3.125 13.32,3.125 13.32,2.347 11.88,1.685 9.72,1.685 8.28,2.347 "
          id="polygon46" />
       <polygon
          fill="#8c8c8c"
-         points="8.28,21.412 9.72,22.074 11.88,22.074 13.32,21.412 13.32,20.636 8.28,20.636 "
+         points="13.32,20.636 8.28,20.636 8.28,21.412 9.72,22.074 11.88,22.074 13.32,21.412 "
          id="polygon48" />
       <polygon
          fill="#8c8c8c"
-         points="20.52,2.347 19.079,1.685 16.92,1.685 15.48,2.347 15.48,3.125 20.52,3.125 "
+         points="15.48,3.125 20.52,3.125 20.52,2.347 19.079,1.685 16.92,1.685 15.48,2.347 "
          id="polygon50" />
       <polygon
          fill="#8c8c8c"
-         points="15.48,21.412 16.92,22.074 19.079,22.074 20.52,21.412 20.52,20.636 15.48,20.636 "
+         points="20.52,20.636 15.48,20.636 15.48,21.412 16.92,22.074 19.079,22.074 20.52,21.412 "
          id="polygon52" />
       <polygon
          fill="#8c8c8c"
-         points="27.72,2.347 26.28,1.685 24.119,1.685 22.68,2.347 22.68,3.125 27.72,3.125 "
+         points="22.68,3.125 27.72,3.125 27.72,2.347 26.28,1.685 24.119,1.685 22.68,2.347 "
          id="polygon54" />
       <polygon
          fill="#8c8c8c"
-         points="22.68,21.412 24.119,22.074 26.28,22.074 27.72,21.412 27.72,20.636 22.68,20.636 "
+         points="27.72,20.636 22.68,20.636 22.68,21.412 24.119,22.074 26.28,22.074 27.72,21.412 "
          id="polygon56" />
       <polygon
          fill="#8c8c8c"
-         points="34.919,2.347 33.479,1.685 31.319,1.685 29.879,2.347 29.879,3.125 34.919,3.125 "
+         points="29.879,3.125 34.919,3.125 34.919,2.347 33.479,1.685 31.319,1.685 29.879,2.347 "
          id="polygon58" />
       <polygon
          fill="#8c8c8c"
-         points="29.879,21.412 31.319,22.074 33.479,22.074 34.919,21.412 34.919,20.636 29.879,20.636 "
+         points="34.919,20.636 29.879,20.636 29.879,21.412 31.319,22.074 33.479,22.074 34.919,21.412 "
          id="polygon60" />
       <polygon
          fill="#8c8c8c"
-         points="42.119,2.347 40.68,1.685 38.521,1.685 37.079,2.347 37.079,3.125 42.119,3.125 "
+         points="37.079,3.125 42.119,3.125 42.119,2.347 40.68,1.685 38.521,1.685 37.079,2.347 "
          id="polygon62" />
       <polygon
          fill="#8c8c8c"
-         points="37.079,21.412 38.521,22.074 40.68,22.074 42.119,21.412 42.119,20.636 37.079,20.636 "
+         points="42.119,20.636 37.079,20.636 37.079,21.412 38.521,22.074 40.68,22.074 42.119,21.412 "
          id="polygon64" />
       <polygon
          fill="#8c8c8c"
-         points="49.319,2.347 47.879,1.685 45.719,1.685 44.28,2.347 44.28,3.125 49.319,3.125 "
+         points="44.28,3.125 49.319,3.125 49.319,2.347 47.879,1.685 45.719,1.685 44.28,2.347 "
          id="polygon66" />
       <polygon
          fill="#8c8c8c"
-         points="44.28,21.412 45.719,22.074 47.879,22.074 49.319,21.412 49.319,20.636 44.28,20.636 "
+         points="49.319,20.636 44.28,20.636 44.28,21.412 45.719,22.074 47.879,22.074 49.319,21.412 "
          id="polygon68" />
       <polygon
          fill="#141414"
-         points="57.059,3.931 56.053,3.931 56.053,19.821 57.059,19.828 57.6,21.601 57.6,2.16 "
+         points="57.6,21.601 57.6,2.16 57.059,3.931 56.053,3.931 56.053,19.821 57.059,19.828 "
          id="polygon70" />
       <polygon
          fill="#1f1f1f"
-         points="0,21.601 0,2.16 0.54,3.931 0.54,8.281 3.6,8.281 3.6,15.479 0.54,15.479 0.54,19.828 "
+         points="3.6,8.281 3.6,15.479 0.54,15.479 0.54,19.828 0,21.601 0,2.16 0.54,3.931 0.54,8.281 "
          id="polygon72" />
       <polygon
          fill="#1c1c1c"
-         points="0.403,9.792 0.403,11.88 3.6,11.88 3.6,8.281 0.54,8.281 "
+         points="0.54,8.281 0.403,9.792 0.403,11.88 3.6,11.88 3.6,8.281 "
          id="polygon74" />
       <polygon
          fill="#383838"
-         points="3.6,11.88 0.403,11.88 0.403,13.968 0.54,15.479 3.6,15.479 "
+         points="3.6,15.479 3.6,11.88 0.403,11.88 0.403,13.968 0.54,15.479 "
          id="polygon76" />
       <path
          d="m 0.54,3.931 v 4.32 c 1.713,0.324 3.017,1.822 3.017,3.629 0,1.807 -1.296,3.313 -3.017,3.637 v 4.319 H 57.059 V 3.931 Z"
@@ -269,209 +269,209 @@
     </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;fill:#f2f2f2;stroke-width:0.75"
-       x="-8.0244579"
-       y="-25.83675"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#f2f2f2;stroke-width:0.75"
+       x="-6.6244063"
+       y="-25.88439"
        id="text4496"
        transform="rotate(90)"><tspan
          sodipodi:role="line"
          id="tspan4494"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:OCRA;-inkscape-font-specification:OCRA;fill:#f2f2f2;stroke-width:0.75"
-         x="-8.0244579"
-         y="-25.83675">74HC595</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#f2f2f2;stroke-width:0.75"
+         x="-6.6244063"
+         y="-25.88439">74HC595</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="43.852001"
-       y="-11.840273"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="44.248753"
+       y="-11.863945"
        id="text32495"><tspan
          sodipodi:role="line"
          id="tspan32493"
-         style="stroke-width:0.75"
-         x="43.852001"
-         y="-11.840273">VCC</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.248753"
+         y="-11.863945">VCC</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="43.852001"
-       y="-4.6412573"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="44.055393"
+       y="-5.0356245"
        id="text36843"><tspan
          sodipodi:role="line"
          id="tspan36841"
-         style="stroke-width:0.75"
-         x="43.852001"
-         y="-4.6412573">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.055393"
+         y="-5.0356245">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan99322">A</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="43.853897"
-       y="2.5589285"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="44.016331"
+       y="2.5355546"
        id="text43309"><tspan
          sodipodi:role="line"
          id="tspan43307"
-         style="stroke-width:0.75"
-         x="43.853897"
-         y="2.5589285">SER</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.016331"
+         y="2.5355546">SER</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;text-decoration:overline;text-decoration-line:overline;stroke-width:0.75"
-       x="43.852001"
-       y="9.7588177"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-decoration:overline;text-decoration-line:overline;stroke-width:0.75"
+       x="44.055393"
+       y="9.735054"
        id="text45865"><tspan
          sodipodi:role="line"
          id="tspan45863"
-         style="stroke-width:0.75"
-         x="43.852001"
-         y="9.7588177">OE</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.055393"
+         y="9.735054">OE</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="43.852001"
-       y="16.958429"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="43.887424"
+       y="16.935055"
        id="text47145"><tspan
          sodipodi:role="line"
          id="tspan47143"
-         style="stroke-width:0.75"
-         x="43.852001"
-         y="16.958429">RCLK</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="43.887424"
+         y="16.935055">RCLK</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="43.853897"
-       y="24.159929"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="44.016331"
+       y="24.136555"
        id="text48887"><tspan
          sodipodi:role="line"
          id="tspan48885"
-         style="stroke-width:0.75"
-         x="43.853897"
-         y="24.159929">SRCLK</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.016331"
+         y="24.136555">SRCLK</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;text-decoration:overline;text-decoration-line:overline;stroke-width:0.75"
-       x="43.853897"
-       y="31.358431"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;text-decoration:overline;text-decoration-line:overline;stroke-width:0.75"
+       x="44.016331"
+       y="31.335056"
        id="text52461"><tspan
          sodipodi:role="line"
          id="tspan52459"
-         style="stroke-width:0.75"
-         x="43.853897"
-         y="31.358431">SRCLR</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.016331"
+         y="31.335056">SRCLR</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="43.852001"
-       y="38.558529"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="44.055393"
+       y="38.163372"
        id="text55981"><tspan
          sodipodi:role="line"
          id="tspan55979"
-         style="stroke-width:0.75"
-         x="43.852001"
-         y="38.558529">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="44.055393"
+         y="38.163372">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan122168">H</tspan>'</tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1239948"
-       y="-11.84047"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.5708923"
+       y="-12.235625"
        id="text60863"><tspan
          sodipodi:role="line"
          id="tspan60861"
-         style="stroke-width:0.75"
-         x="8.1239948"
-         y="-11.84047">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.5708923"
+         y="-12.235625">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan149626">B</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1279945"
-       y="-4.6404705"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.4959898"
+       y="-5.0540328"
        id="text63771"><tspan
          sodipodi:role="line"
          id="tspan63769"
-         style="stroke-width:0.75"
-         x="8.1279945"
-         y="-4.6404705">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.4959898"
+         y="-5.0540328">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan147080">C</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1239948"
-       y="2.5590293"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.3220644"
+       y="2.1638751"
        id="text68131"><tspan
          sodipodi:role="line"
          id="tspan68129"
-         style="stroke-width:0.75"
-         x="8.1239948"
-         y="2.5590293">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.3220644"
+         y="2.1638751">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan143754">D</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1279945"
-       y="9.7585287"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.6940365"
+       y="9.3633747"
        id="text69983"><tspan
          sodipodi:role="line"
          id="tspan69981"
-         style="stroke-width:0.75"
-         x="8.1279945"
-         y="9.7585287">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.6940365"
+         y="9.3633747">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan141262">E</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1279945"
-       y="16.95853"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.8260679"
+       y="16.563375"
        id="text73199"><tspan
          sodipodi:role="line"
          id="tspan73197"
-         style="stroke-width:0.75"
-         x="8.1279945"
-         y="16.95853">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.8260679"
+         y="16.563375">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan137762">F</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1239948"
-       y="24.160028"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.3690357"
+       y="23.746468"
        id="text77933"><tspan
          sodipodi:role="line"
          id="tspan77931"
-         style="stroke-width:0.75"
-         x="8.1239948"
-         y="24.160028">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.3690357"
+         y="23.746468">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan134904">G</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="8.1239948"
-       y="31.358316"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="8.4705992"
+       y="30.963377"
        id="text81985"><tspan
          sodipodi:role="line"
          id="tspan81983"
-         style="stroke-width:0.75"
-         x="8.1239948"
-         y="31.358316">Q<tspan
-   style="font-size:65%;baseline-shift:sub"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="8.4705992"
+         y="30.963377">Q<tspan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:65%;font-family:sans-serif;-inkscape-font-specification:sans-serif;baseline-shift:sub"
    id="tspan130090">H</tspan></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:4px;line-height:1.25;font-family:OCRA;-inkscape-font-specification:OCRA;stroke-width:0.75"
-       x="5.2640014"
-       y="38.558872"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4px;line-height:1.25;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+       x="4.3833923"
+       y="38.535053"
        id="text84959"><tspan
          sodipodi:role="line"
          id="tspan84957"
-         style="stroke-width:0.75"
-         x="5.2640014"
-         y="38.558872">GND</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:sans-serif;-inkscape-font-specification:sans-serif;stroke-width:0.75"
+         x="4.3833923"
+         y="38.535053">GND</tspan></text>
   </g>
 </svg>

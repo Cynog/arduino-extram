@@ -11,13 +11,13 @@ As RAM access times are crucial for performance, the project is focused on reduc
 The pinout of the external SRAM **GM3-2064-5** can be seen in the graphic below. A<sub>0</sub> : A<sub>12</sub> are the pins for the $13$-bit address. I/O<sub>1</sub> : I/O<sub>8</sub> are I/O pins for the $8$ bit of the single byte at each specific address. For read and write operations, this library just uses the output enable pin <span style="text-decoration:overline">OE</span> and the write enable pin <span style="text-decoration:overline">WE</span>. Both chip select pins <span style="text-decoration:overline">CS</span><sub>1</sub> and CS<sub>2</sub> are fixed and thus not controlled by the Arduino. Further information can be found in the corresponding datasheet.
 
 <p align="center">
-<img src="./assets/HM3-2064-5_pinout.png" width="305"/>
+<img src="./assets/HM3-2064-5_pinout.svg" width="305"/>
 </p>
 
 As the Arduino has only $20$ I/O pins, shifting registers are used to receive the $13$-bit address serially. This is done by connecting two $8$-bit serial input parallel output **74HC595** shifting registers together, where the corresponding output pins of each register are connected to A<sub>0</sub> : A<sub>12</sub>. The output enable <span style="text-decoration:overline">OE</span> is fixed to be active. The SER pin is used for serial input at each rising edge of SRCLK. Further information can again be found in the datasheet.
 
 <p align="center">
-<img src="./assets/74HC595_pinout.png" width="220"/>
+<img src="./assets/74HC595_pinout.svg" width="220"/>
 </p>
 
 The following Circuit Diagram shows all connections between these components and the Arduino. The following color code is used:
