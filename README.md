@@ -27,7 +27,7 @@ The following Circuit Diagram shows all connections between these components and
 * **Orange** wires are used for the $8$ I/O bits of the external ram connected directly to the Arduino to enable a parallel read and write after the address is set.
 * **Yellow** are the read enable and write enable pins to initialize read or write operations at the specific address.
 * **Black** GND
-* **Red** $5$V
+* **Red** $5$ V
 
 <p align="center">
 <img src="./assets/arduino-extram_circuit.svg"/>
