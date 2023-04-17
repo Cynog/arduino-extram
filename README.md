@@ -285,10 +285,10 @@ This test tries to find the overhead caused by the time measurement. If one plug
 
 |  OCR1A | precision [ms] | time [ms] for ```_delay_ms(100000)``` | overhead |
 | -----: | :------------: | :-----------------------------------: | :------: |
-| $1999$ |      $1$       |               $100382$                | $0.38\%$ |
-|  $199$ |     $0.1$      |              $103963.6$               | $3.96\%$ |
+| $1999$ |      $1$       |               $100382$                | $0.38$% |
+|  $199$ |     $0.1$      |              $103963.6$               | $3.96$% |
 
-One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler options, which is why we will just leave it at $1999$. In this case the overhead was only about $0.38\%$, which we usually will not even notice, as our timer is only counting full milliseconds. Additionally the timer overhead should be linear, which makes all measured times easily comparable.
+One could set ```OCR1A``` a little bit lower to compensate the overhead, but this might depend on compiler options, which is why we will just leave it at $1999$. In this case the overhead was only about $0.38$%, which we usually will not even notice, as our timer is only counting full milliseconds. Additionally the timer overhead should be linear, which makes all measured times easily comparable.
 
 
 
